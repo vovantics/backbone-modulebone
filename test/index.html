@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Mocha + Chai Test Suite</title>
+    <link rel="stylesheet" href="lib/mocha-1.2.2/mocha.css">
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <div id="sandbox" style="overflow: hidden; height: 1px;"></div>
+
+    <script src="lib/expect.js"></script>
+    <script src="lib/mocha-1.2.2/mocha.js"></script>
+    <script src="lib/chai.js"></script>
+    <script src="lib/sinon-1.5.2.js"></script>
+    <script type="text/javascript" src="scripts/vendor/require/require.js" data-main="scripts/config"></script>
+
+    <script>
+      // Chai
+      var assert = chai.assert,
+          should = chai.should(),
+          expect = chai.expect;
+
+      mocha.setup({
+        ui: 'bdd',
+        ignoreLeaks: true
+      });
+
+      var specs = [];
+
+      specs.push('../spec/todo');
+      specs.push('../spec/session');
+      specs.push('../spec/account');
+      specs.push('../spec/meta');
+      specs.push('../spec/about');
+
+      require(specs, function(){
+          $(function(){
+              mocha.run();//.globals(['Backbone']);
+          });
+      });
+    </script>
+  </body>
+</html>

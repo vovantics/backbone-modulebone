@@ -1,0 +1,13 @@
+<div class="connect-buttons">
+  <form class="connect-button" method="post" action="/social/facebook/redirect">
+    <a class="btn-auth btn-facebook" href="#button">Sign up with <b>Facebook</b></a>
+  </form>
+  <form class="connect-button" method="post" action="/social/twitter/redirect">
+    <a class="btn-auth btn-twitter" href="#button">Sign up with <b>Twitter</b></a>
+  </form>
+</div>
+
+<h3>{{_ "Sign Up"}}</h3>
+{{{render_form form}}}
+<p>By signing up, you are agreeing to our <a href="terms">Terms of Use</a>.</p>
+<p>Already have an account? <a href="sessions/login">Log in</a>.</p>

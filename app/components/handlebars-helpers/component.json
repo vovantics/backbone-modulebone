@@ -1,0 +1,9 @@
+{
+  "name": "handlebars-helpers",
+  "version": "0.0.0",
+  "commit": "de0e5445e6a6a5390325f03084e3fdcd685125fb",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/danharper/Handlebars-Helpers.git"
+  }
+}

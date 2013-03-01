@@ -1,0 +1,4 @@
+*.coffee
+*.less
+styles/less/
+components/

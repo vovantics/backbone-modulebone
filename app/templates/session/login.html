@@ -1,0 +1,13 @@
+<div class="connect-buttons">
+  <form class="connect-button" method="post" action="/social/facebook/redirect">
+    <a class="btn-auth btn-facebook" href="#button">Sign in with <b>Facebook</b></a>
+  </form>
+  <form class="connect-button" method="post" action="/social/twitter/redirect">
+    <a class="btn-auth btn-twitter" href="#button">Sign in with <b>Twitter</b></a>
+  </form>
+</div>
+
+<h3>Sign In</h3>
+{{{render_form form}}}
+<p><a class="forgot-pass" href="/accounts/password/reset/">Forgot your password?</a></p>
+<p>No account? <a href="/accounts/register/">Sign up for free</a>.</p>

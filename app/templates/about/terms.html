@@ -1,0 +1,210 @@
+<h1>Scale <span class="amp">&amp;</span> Rhythm</h1>
+
+<p>This page <span class="prompt">falls somewhere between a tool and an essay. It </span>sets out to explore how the intertwined typographic concepts of scale and rhythm can be encouraged to shake a leg on web pages. <span class="prompt">Drag the colored boxes along the scale to throw these words anew. For the most part, this text is just a libretto for the performance you can play upon it.</span>
+
+<h3>Choosing sizes</h3>
+
+<p>Don’t compose without a scale. Out of context, most would probably assume this quote recommends a rather straightforward approach to choosing a sequence of musical notes. But actually, in this case, the author’s subject centers around how to go about selecting a harmonious set of typeface sizes.  In <cite class="publication"><a href="http://www.amazon.com/gp/product/0881792063?ie=UTF8&amp;tag=keepswimming-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0881792063">The Elements of Typographic Style</a></cite>, author <cite class="author">Robert Bringhurst</cite> includes this principle as one of the old, well-traveled roads at the core of the tradition.</p>
+
+<p>Of course, good typesetting requires something more than selecting a series of font sizes, just as music consists of something more than choosing notes. Rhythm, in particular, enables a sequence of notes to beat with musical life; tempo sustains their wit. It is much the same for the world of letters.</p>
+
+<h3>Vertical Tempo</h3>
+
+<p>Most pages of continuous prose pulse with a particular vertical rhythm, established by the lines of its main words, sentences, and paragraphs. If a subheading is set in a different size than the rest of the main text, it needs to be offset in a way that flows with the page’s intrinsic rhythm.</p>
+
+<p>For this, Bringhurst suggests another rule of thumb: Add and delete vertical space in measured intervals. When sized correctly, the vertical spacing around a chunk of larger text can act like the rests in a musical score, allowing the main text to resume on beat.</p>
+
+<p>Size and rhythm make each other interesting. Now it's time to explore how to weave them into web pages. Bear in mind these words are meant to be chewed on more as appetizers than something like a final course. They offer a path, trampled in the hopes of offering passage - not to an automatic destination, but to places for possible, conscious, even mischievous departure.</p>
+
+<h2>Sizing up the <code>&lt;body&gt;</code></h2>
+
+<p>The first step: establish the size of the main text. This becomes the base against which all other variations in type size will be chosen and defined.</p>
+
+<p>Here, it pays to work with the grain. Rather than styling everything from scratch, start out by carefully considering what the browser offers by default. Write the <acronym title="Cascading Style Sheets">CSS</acronym> from there, as a minimal expression of differences from the default style. This approach gets the job done using the least amount of code, yielding a positive impact on page download speed and the ease with which changes can be made in the future (assuming less code means there is less to understand, maintain, and edit).</p>
+
+<p>Without any custom <acronym>CSS</acronym>, the browser’s standard font settings determine the size of the main text. Most web browsers used by people today (Internet Explorer, Firefox, Safari, Opera) set the default font-size to <var>16</var><code>px</code>. Users may adjust this to their own taste, perhaps increasing it if they prefer to read text at a larger size.</p>
+
+<p>Whatever the value of the browser’s setting for font-size, it first cascades into the <acronym title="Document Object Model">DOM</acronym> to effect the font-size of the <code>&lt;body&gt;</code> element. In <acronym>HTML</acronym> documents, the <code>&lt;body&gt;</code> element is the root of all other visual elements. Its properties are passed onto everything below it, so it acts as a typographic base for the whole document. Its descendants are destined to share its appearance unless they define a set of relational differences to it.</p>
+
+<p>As luck would have it, the tags comprising the main text (such as <code>&lt;p&gt;</code>, <code>&lt;li&gt;</code>, and <code>&lt;blockquote&gt;</code>) all inherit the font-size of the <code>&lt;body&gt;</code> element. Therefore, the simplest way to establish the main text size is to adjust the font-size of the <code>&lt;body&gt;</code>.</p>
+
+<h3>Declare <code>&lt;body&gt;</code> font-size using %</h3>
+
+<p>Most users won’t adjust their browser’s font settings, so the most common default font-size – the one to generally design against – is <var>16</var><code>px</code>. For some texts, this size works well, for others, something larger or smaller might be more suitable.
+
+<p>Regardless, the font-size of the <code>&lt;body&gt;</code> should be declared using the <code>%</code> unit of measure, <em>even if the value is <var class="hundred">100</var>%</em>. For example, to set the main text, on average, to <var>12</var><code>px</code>, use the following expression (keeping in mind that <var>12</var><code>px</code> is <var>75</var><code>%</code> of <var>16</var><code>px</code>):</p>
+
+<pre>
+
+<code>body { font-size: 75%; }</code>
+
+</pre>
+
+<p class="first">To keep the main text at <var>16</var><code>px</code>, use:</p>
+
+<pre>
+
+<code>body { font-size: 100%; }</code>
+
+</pre>
+
+<p>This approach has two principal benefits over using other units of measure. First, it insures that the base font-size responds to the user’s preferences; if a user increases their browser’s default text size via the preferences dialog, the base size will also increase. Secondly, setting the <code>&lt;body&gt;</code> font-size in <code>%</code> enables Internet Explorer users to increase or decrease the size of the text at a rate similar to that found in other browsers.
+
+<h3><code>&lt;body&gt;</code> line-height sets page tempo</h3>
+
+<p>Enter rhythm: set the line-height of the body to awaken the beat of the page. The line-height property accomplishes what’s traditionally known in typography as setting the <a href="http://en.wikipedia.org/wiki/Leading">leading</a>. The difference between the line-height and the font-size expresses amount of space between two lines of text.
+
+<p>Whenever possible, line-height values should be set as a number, without any units. Applied to the <code>&lt;body&gt;</code> element, this will insure consistency in the proportion of line-height throughout the document, regardless of variations to font-size.
+
+<p>For example, if the <code>&lt;body&gt;</code> line-height is set to <var>1.25</var>, then the computed line-height will always be <var>1.25</var> × the font-size of the element, unless stated otherwise. If the <code>&lt;body&gt;</code> font-size is set to <var class="hundred">100</var><code>%</code>, it will typically have a computed size of <var>16</var><code>px</code>, which yields a line-height of <var>20</var><code>px</code> (<var>16</var> × <var>1.25</var> = <var>20</var>). If the font-size is increased to <var>150</var><code>%</code> (which, on average, is <var>24</var><code>px</code>), then the line-height will automatically adjust to <var>24</var> × <var>1.25</var> = <var>30</var><code>px</code>.
+
+<p>The main benefit of setting line-height as number sans units: all descendant elements will have the same <em>proportional</em>  line-height, even if they have a different font-size.  If an <code>&lt;h1&gt;</code> element were added as a child to the <code>&lt;body&gt;</code> and set at a larger font-size, the line-height of the <code>&lt;h1&gt;</code> would still be <var>1.25</var> times the larger font-size. It would appear to proportionally have the same line spacing as the main text (e.g. single spaced, double spaced, or, in this case, 1¼ spaced).</p>
+
+<p>While this flexibility is great, it’s still useful to keep the computed size of the <code>&lt;body&gt;</code> line-height in mind as <code>px</code>. This amount expresses a beat, repeated vertically, down the length of the text block, like the lines on ruled notebook paper.</p>
+
+<p>In the example just given, the computed <code>&lt;body&gt;</code> line-height was <var>20</var><code>px</code>. For such a page, the first beat would end at <var>20</var><code>px</code>, the next at <var>40</var><code>px</code>, and so on, down the textblock.  Each line of the main text should run precisely across each beat, e.g. bottom of the first line at <var>20</var><code>px</code>, bottom of the second at <var>40</var><code>px</code>, and so on…
+
+<p>This number – the line-height of the <code>&lt;body&gt;</code> – is so integral to the harmony of the page, I’ve taken the liberty of following Bringhurst’s lead to denote it with a special symbol, λ (the Greek letter lambda). Given its typical usage in particle physics to indicate wavelength, λ seems an apt symbol to signify the line-height of the body because it associates the value with rhythm.</p>
+
+<p>λ provides a convenient unit of measure with which to size subheadings and the spacing around them. The subheadings in this document, leaded with a single, white line before and after, aspire to let the page breathe and provide syncopation.  However, in the words of Bringhurst, they must be spaced such that the main text remains aligned precisely on beat and in phase – in other words, each subheading’s line-height, padding-top and padding-bottom must be set with values that add up to an exact multiple of λ. That way, the main text can resume precisely in phase, as if it only had other lines of main text beating before it.
+
+<h2>Beyond <code>&lt;body&gt;</code></h2>
+
+<p>Once the font size of the <code>&lt;body&gt;</code> has been established, most other elements can be sized in relation to it, using the <code>em</code> unit of measure. (Some elements may still need to be sized independently from the main text, such as ones designed to shrink-wrap a background image. These should generally be sized in <code>px</code>).
+
+<h3>The <code>em</code></h3>
+
+<p>A relative unit of measure, an <code>em</code> expresses length relative to an element’s font-size. If an element’s font-size is <var>10</var><code>px</code>, then one <code>em</code> equals <var>10</var><code>px</code>, <var>1.5</var><code>em</code> equals <var>15</var><code>px</code>, <var>2</var><code>em</code> equals <var>20</var><code>px</code>, and so on.
+
+<p>There’s one wrinkle to this rule of thumb: if <code>em</code> expresses length relative to an element’s font-size, what if an element’s font-size is itself set in <code>em</code>? In that case only, <code>em</code> acts a multiple of the <em>parent</em> element’s font-size.
+
+<p class="first">As an example, consider the following <acronym>HTML</acronym>:
+
+<pre>
+<code>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;style&gt;
+      body { font-size:100%; }
+      h1 { font-size:1.5em; padding-bottom:1.5em; }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;p&gt;This is an example.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+
+<p class="first">In this case, the computed <code>px</code> values for the <code>&lt;h1&gt;</code> element’s <code>em</code> sizings are as follows (assuming a <var class="hundred">100</var><code>%</code> font-size on the <code>&lt;body&gt;</code> equals <var>16</var><code>px</code>):</p>
+
+<table>
+  <caption>computed <code>em</code> values</caption>
+  <thead>
+    <tr>
+      <td class="property"><code>h1</code> style property</td>
+      <td>value</td>
+      <td><code>em</code> = </td>
+      <td class="basis">font-size of</td>
+      <td>computed <code>px</code> value</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="property">font-size</td>
+      <td><var>1.5</var><code>em</code></td>
+      <td><var>16</var><code>px</code></td>
+      <td class="basis">parent</td>
+      <td><var>1.5</var> × <var>16</var> = <var>24</var><code>px</code></td>
+    </tr>
+    <tr>
+      <td class="property">padding-bottom</td>
+      <td><var>1.5</var><code>em</code></td>
+      <td><var>24</var><code>px</code></td>
+      <td class="basis">element</td>
+      <td><var>1.5</var> × <var>24</var> = <var>36</var><code>px</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br>The first line of this table reflects the <em>exception</em> to the general rule: to calculate the <code>px</code> value of any <code>font-size</code> value set in <code>em</code>, multiply it by the <code>px</code> value of the element’s <em>parent</em> node (in this case, the <code>&lt;body&gt;</code>). For any other style value set in <code>em</code> – including margin, padding, width, or height – multiply the <code>em</code> value by the computed font-size of the element <em>itself</em>.
+
+<p>The mechanics of the <code>em</code> unit offer an excellent way to size child elements in relation to their parents.  In fact, if every child element defines its sizing values in <code>em</code>, a chain reaction is set off. Each child becomes proportionally bound to its parent, which in turn is bound to <em>its</em> parent, all the way up to the root element, ancestor of all. In this way, the proportions of the whole document end up being defined in relation to a single, shared value: the font-size of the <code>&lt;body&gt;</code>.
+
+<p>Documents sized in this way enjoy a golden property, one that most web pages would do well to provide: <em>proportional scaling</em>. Should the user or designer change the base font-size, all the other elements on the page will resize accordingly, preserving their original proportion to the <code>&lt;body&gt;</code>.  It will look as if the view has just been zoomed in or out.
+
+<p>This is particularly helpful if the type sizes have been chosen in relation to one another, e.g. composed using a scale. Regardless of the extent to which the <code>&lt;body&gt;</code> font-size is decreased or enlarged, each typographic element will maintain its proportional, scalar relationship with all the others. Everything stays in tune.
+
+<h2>Composing to a Scale</h2>
+
+<p>With the physics of the <code>em</code> unit covered, it’s time to finally discuss how to put it to good use. Some typographic elements are naturally well-suited to having a different font-size than the rest of the main main text, such as subheadings. For these, each variation in size may be selected from a scale where the <code>em</code> relationships have been figured out: the size of the main text can occupy one slot on the scale, and the other slots are set some distance away, in <code>em</code>.
+
+<p>I’ve included several scales in the panel, all derived from <cite>Bringhurst’s</cite> examples in <cite class="publication"><a href="http://www.amazon.com/gp/product/0881792063?ie=UTF8&amp;tag=keepswimming-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0881792063">The Elements of Typographic Style</a></cite>.  I use the word “derived” because whereas Bringhurst suggests points or picas as the units of his examples, I’ve had to remap those units into the oddly elastic world of the browser.</p>
+
+<p>There are many ways to see the same thing, and this couldn’t be more true of the scales. The visual thinker in me likes to look at them with no units at all, as just a simple series of shapes. My inner mathematician enjoys perusing what I’ve called the <em>scale</em> units – the pure numbers behind the scale.  Those making up the Traditional scale were lifted from the point sizes of the traditional series as documented by Bringhurst and others, a collection of sizes consistently chosen, named and used by typographers over roughly the last half millennium. The <a href="http://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci</a> numbers reflect the golden ratio, φ, in ever increasing degrees of accuracy. More information about Le Corbusier’s Modular scale may be found in Bringhurst’s book or on the <a href="http://en.wikipedia.org/wiki/Modulor">web</a>.</p>
+
+<p>For the practical web typographer, however, the <code>em</code> and <code>px</code> units of measure have much to tell. The font-size value of each subheading may be observed at a glance by noting the number to the right of its respective sizing box.
+
+<p>The pink box represents the font-size of the <code>&lt;body&gt;</code>. Just as this value acts as a typographic foundation, determining the relative size of each element throughout the document, it also establishes the actual size of the slots above and below it in the scale. Move the pink box down, and the size of each box on the scale shrinks behind it. Move it up, and every box after it enlarges. Change the base font-size, and the whole scale expands or contracts accordingly.
+
+<p>When dragged to different places on the scale, the pink base box remains the same size. The scale doesn’t resize it – <em>it</em> resizes the scale. The square to the right of it always locks to its size, leaving the slots before and after it to resize themselves according to their respective position on the scale.
+
+<h3>Switching Scales</h3>
+
+<p>Upon the selection of a different scale from the drop down menu, any given subhead might become out of tune. This happens when its size no longer matches that of any box on the scale. When this happens, its proxy icon is placed into a box of out-of-scale elements. Restore its congruency by dragging it back onto the scale and dropping it into any slot.</p>
+
+<h2>Maintaining Rhythm</h2>
+
+<p>Whenever a subhead is resized, the code tries to automatically preserve the vertical rhythm of the page. It looks at the line-height of the subhead, adds a “white line” padding of that height above and below the text, then adds just enough extra leading to the padding to snap the height of the whole thing to an exact multiple of λ.</p>
+
+<p>At this point, you might be asking: “Why set subhead padding rather than margin?” The answer: vertical margin collapses between two block elements. If you have an <code>h2</code> sized to <var>4</var>λ below an <code>h1</code> sized to <var>5</var>λ, they need to add up to <var>9</var>λ (or some other whole number) to maintain accurate rhythm. If we set margins rather than padding, the top margin of the <code>h2</code> will collapse, nudging its text content right up to the bottom margin of the <code>h1</code>. Taken together, the sum of the vertical space occupied by the <code>h1</code> and <code>h2</code> will be less than <var>9</var>λ, and probably not a whole number, breaking the rhythm.
+
+<h3>Caveats</h3>
+
+<p>Although the algorithm for maintaining rhythm generally produces a good, standard look, some typographers might want to set subhead padding a bit differently – perhaps taking leading out of the white lines rather than adding to them, or setting top and bottom padding to asymmetric lengths, or something else.
+
+<p>Another thing: it’s impossible to maintain accurate vertical rhythm on webkit (at least the version of webkit bundled into Safari 3 of the time of this writing):
+
+<p>Some subheadings are spaced in a way that require accurate, sub-pixel height summation to preserve vertical rhythm.  For example, if λ = <var>20</var><code>px</code>, then a heading with a computed line height of <var>23.3333</var><code>px</code> and computed top and bottom vertical padding each of <var>18.3333</var><code>px</code> will allow the text to resume on beat. This works fine in most browsers (<var>23.3333</var> + (<var>18.3333</var> × 2) ≈ <var>60</var><code>px</code>, which is exactly 3 × λ, the base line-height).
+
+<p>Safari <var>3</var>, however, rounds computed <code>px</code> values to the nearest integer. So, in the above example, the math ends up looking like <var>23</var> + (<var>18</var> × <var>2</var>) = <var>59</var><code>px</code>.  The more of these kinds of headings there are, the more the vertical rhythm will drift out of phase (in this case, by <var>1</var><code>px</code> per line of heading).</p>
+
+<p>To review accuracy of your typographic layout, you’re better off using Firefox. If you are reading this page with Firefox, I provide the option to see ruled lines when λ = <var>20</var><code>px</code>. On Safari, I don’t even bother.</p>
+
+<h2>The Layout Panel</h2>
+
+<p>As a parting shot, I wrote the beginnings of a layout panel. Please pardon the cryptic variables: <code>w</code> stands for page width, <code>h</code> for page height, <code>P</code> for page proportion (<code>h/w</code>), <code>t</code> for top margin, <code>l</code> for left margin, <code>b</code> for bottom margin, and <code>r</code> for right margin.  The terms are straight out of <cite>Bringhurst’s</cite> chapter on <cite>“Shaping the Page”</cite>.</p>
+
+<p>At the moment, you can only futz with the page width, <code>w</code>. If you choose to add the layout panel’s sizings to the output generated by the code panel, you need to introduce the concept of a page containing a textblock into your markup, e.g.:</p>
+
+<pre><code>
+
+&lt;body>
+  &lt;div id="page">
+    &lt;div id="textblock">
+      &lt;h1>heading&lt;/h1>
+      (rest of content)
+    &lt;/div>
+  &lt;/div>
+&lt;/body>
+
+</code></pre>
+
+The code sets the top margin of the textblock under the assumption that an <code>h1</code> is its first child: it looks at the value of <code>l</code> and subtracts the top padding and leading of the <code>h1</code>.
+
+<h2>Show Me the Code!</h2>
+
+<p>As you fiddle with the panel settings, you may view the state of the <acronym>CSS</acronym> at anytime by clicking the “show” link on the code panel. Feel free to copy/paste it into your own pages.
+
+<h2 class="separator">❧</h2>
+
+<p>Thus ends – or shall I say begins – this exploration of scale and rhythm. My intention has been to offer a descriptive survey rather than to prescribe an unwavering tedium of rules. Your work will inevitably want to march to the beat of its own drum, in its own key. May you find the art, or may the art find you.</p>
+
+<p>If you’re wondering what this page would look like in a different typeface, with different content, etc., check out <a href="http://www.getfirebug.com/">firebug</a>. It allows you to dynamically futz with the presentation, even content, of the page.</p>
+
+<p>Thanks for reading!</p>
+
+<p id="ft">— <a href="http://lamb.cc/"><cite class="author">Iain Lamb</cite></a> • <var>2009</var></p>
+
+<p>Credit: <a href="http://lamb.cc/typograph/">Composing scale and vertical rhythym</a></p>

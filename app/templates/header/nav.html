@@ -1,0 +1,37 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="#">{{appname}}</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="active"><a href="#todos/">ToDos</a></li>
+          <li><a href="#">Browse</a></li>
+        </ul>
+
+        <ul id="menu" class="nav pull-right">
+          {{#if is_authenticated}}
+          <li class="dropdown">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown">{{username}} <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="accounts/{{username}}">View Profile</a></li>
+                <li><a href="accounts/edit">Settings</a></li>
+                <li class="divider"></li>
+                <li><a href="/">Help</a></li>
+                <li><a href="contact">Contact</a></li>
+                <li class="divider"></li>
+                <li><a id="logout" href="">Log out</a></li>
+            </ul>
+          </li>
+          {{else}}
+          <li><a href="#sessions/login">Log in</a></li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

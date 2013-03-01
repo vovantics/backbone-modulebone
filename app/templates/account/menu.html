@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs nav-stacked">
+    <li class="nav-header">YOUR ACCOUNT</li>
+    {{#each menuItems}}
+      <li{{#if_eq href compare=../activePage}} class="active"{{/if_eq}}><a href="{{href}}">{{caption}}</a></li>
+    {{/each}}
+</ul>
