@@ -222,8 +222,8 @@ function(app, _, Backbone, Constants) {
 
             var isCompleted = this.model.get('completed');
             return ( // hidden cases only
-                (!isCompleted && filterVal === 'completed')
-                || (isCompleted && filterVal === 'active')
+                (!isCompleted && filterVal === 'completed') ||
+                (isCompleted && filterVal === 'active')
             );
         },
 
