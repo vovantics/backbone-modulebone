@@ -384,7 +384,7 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
         sync: function (method, model, options) {
             debug.info("Entering Account.Model.sync()...");
 
-            options || (options = {});
+            options = options || {};
 
             // Passing options.url will override the default
             // construction of the url in Backbone.sync

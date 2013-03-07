@@ -39,7 +39,7 @@ function(app, Alert) {
         save: function(attributes, options) {
             debug.info("Entering Base.Model.save()...");
 
-            options || (options = {});
+            options = options || {};
 
             // Handle non-200 HTTP response.
             options.error = function(model, xhr, options) {
@@ -54,7 +54,7 @@ function(app, Alert) {
         fetch: function(options) {
             debug.info("Entering Base.Model.fetch()...");
 
-            options || (options = {});
+            options = options || {};
 
             // Handle non-200 HTTP response.
             options.error = function(model, xhr, options) {
@@ -67,7 +67,7 @@ function(app, Alert) {
         destroy: function(options) {
             debug.info("Entering Base.Model.destroy()...");
 
-            options || (options = {});
+            options = options || {};
 
             // Handle non-200 HTTP response.
             options.error = function(model, xhr, options) {

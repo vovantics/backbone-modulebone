@@ -115,7 +115,7 @@ function(app, Backbone, Views, Base, Alert) {
         destroy: function(options) {
             debug.info("Entering Session.Model.destroy()...");
 
-            options || (options = {});
+            options = options || {};
 
             Backbone.Model.prototype.destroy.call(this, options);
 
