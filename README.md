@@ -153,7 +153,6 @@ Unit tests are run in a headless WebKit via PhantomJS.
 
 ## TODO
 
-* Run yeoman lint and clean up
 * Update all text to use Jed & i18n
   * Get config.js locale: localStorage.getItem('locale') || 'en-us', working first
 * Deploy to Amazon S3 using https://github.com/pifantastic/grunt-s3

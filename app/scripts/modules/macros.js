@@ -153,7 +153,7 @@ function($, _, Backbone, Handlebars, Utils) {
 
                 if ( !fn ) {
                     field.template = method;
-                    fn = Handlebars.helpers['input_field'];
+                    fn = Handlebars.helpers.input_field;
                 }
 
                 field.withLabel = form.withLabel;
