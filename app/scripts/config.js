@@ -6,8 +6,7 @@ require.config({
 
     // Do a hard override of the locale here
     // The default is to auto-detect from browser defaults
-    // TODO: locale: localStorage.getItem('locale') || 'en-us',
-    locale: 'en-us',
+    locale: localStorage.getItem('locale') || 'en-us',
 
     // Path mappings for module names not found directly under
     // baseUrl.
@@ -18,6 +17,7 @@ require.config({
         underscore: 'vendor/lodash.underscore',
         backbone: 'vendor/backbone/backbone',
         'backbone.layoutmanager': 'vendor/backbone.layoutmanager/backbone.layoutmanager',
+        'backbone.localstorage': 'vendor/backbone/backbone-localstorage',
         'backbone.routefilter': 'vendor/backbone.routefilter',
         'backbone.subroute': 'vendor/backbone.subroute',
         "bootstrap": "vendor/bootstrap",
@@ -51,6 +51,7 @@ require.config({
             ],
             exports: "Backbone.LayoutManager"
         },
+        "bootstrap": ["jquery"],
         "backbone.routefilter": {
             deps: [
                 "backbone",
@@ -62,7 +63,7 @@ require.config({
             deps: ["backbone", "underscore"],
             exports: "Backbone.SubRoute"
         },
-        "bootstrap": ["jquery"],
+        "backbone.localstorage": ["backbone"],
         'helpers': {
             deps: [
                 'handlebars'

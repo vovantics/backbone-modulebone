@@ -194,7 +194,8 @@ module.exports = function( grunt ) {
       optimize: 'none',
       baseUrl: './scripts', //'./modules',
       wrap: true,
-      name: 'config'
+      name: 'config',
+      mainConfigFile: './scripts/main.js'
     },
 
     // Deploy configuration

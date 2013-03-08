@@ -16,7 +16,8 @@ define([
     'modules/alert',
 
     // Plugins
-    "vendor/backbone/backbone-localstorage"
+    //"vendor/backbone/backbone-localstorage"
+    'backbone.localstorage'
 ],
 
 function(app, Backbone, Constants, Views, Session, Header, Alert) {
