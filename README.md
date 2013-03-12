@@ -153,9 +153,11 @@ Unit tests are run in a headless WebKit via PhantomJS.
 
 ## TODO
 
+* Delete auth-buttons.less
+* Animate #sessions/login, #accounts/register/, #accounts/join like delicious
 * Update all text to use Jed & i18n
 * Deploy to Amazon S3 using https://github.com/pifantastic/grunt-s3
-* Dynamic documentation using Sphinx
+* Dynamic documentation using [dox](https://github.com/visionmedia/dox) / [jsdoc-toolkit](http://code.google.com/p/jsdoc-toolkit/)
 
 ## Acknowledgements
 

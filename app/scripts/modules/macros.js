@@ -41,7 +41,7 @@ function($, _, Backbone, Handlebars, Utils) {
             '<div class="control-group{{#classNames}} {{.}}{{/classNames}}">' +
                 '{{#if withLabel}}<label class="control-label" for="{{id}}">{{label}}</label>{{/if}}' +
                 '<div class="controls">' +
-                    '<select id="{{id}}" name="{{name}}">{{#options}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/options}}</select>' +
+                    '<select id="{{id}}" name="{{name}}" class="{{#if required}}required{{/if}} {{#inputClassNames}}{{.}} {{/inputClassNames}}">{{#options}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/options}}</select>' +
                     '{{#help_inline}}<p class="help-inline">{{{.}}}</p>{{/help_inline}}' +
                     '{{#help_block}}<p class="help-block">{{{.}}}</p>{{/help_block}}' +
                 '</div>' +
@@ -50,9 +50,9 @@ function($, _, Backbone, Handlebars, Utils) {
             '<div class="control-group{{#classNames}} {{.}}{{/classNames}}">' +
                 '{{#if withLabel}}<label class="control-label" for="{{id}}">{{label}}</label>{{/if}}' +
                 '<div class="controls">' +
-                    '<select class="input-mini" id="{{name}}-month" name="{{name}}-month">{{#monthoptions}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/monthoptions}}</select>' +
-                    '<select class="input-mini" id="{{name}}-day" name="{{name}}-day">{{#dayoptions}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/dayoptions}}</select>' +
-                    '<select class="input-small" id="{{name}}-year" name="{{name}}-year">{{#yearoptions}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/yearoptions}}</select>' +
+                    '<select class="input-mini {{#inputClassNames}}{{.}} {{/inputClassNames}}" id="{{name}}-month" name="{{name}}-month">{{#monthoptions}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/monthoptions}}</select>' +
+                    '<select class="input-mini {{#inputClassNames}}{{.}} {{/inputClassNames}}" id="{{name}}-day" name="{{name}}-day">{{#dayoptions}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/dayoptions}}</select>' +
+                    '<select class="input-small {{#inputClassNames}}{{.}} {{/inputClassNames}}" id="{{name}}-year" name="{{name}}-year">{{#yearoptions}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/yearoptions}}</select>' +
                     '{{#help_inline}}<p class="help-inline">{{{.}}}</p>{{/help_inline}}' +
                     '{{#help_block}}<p class="help-block">{{{.}}}</p>{{/help_block}}' +
                 '</div>' +
@@ -92,11 +92,16 @@ function($, _, Backbone, Handlebars, Utils) {
             form.method = 'post';
         }
 
+        // Default class names are none.
+        if ( !form.classNames ) {
+            form.classNames = [];
+        }
+
         if ( form.withLabel ) {
-            buffer = '<form id="' + form.id + '" method="' + form.method + '" class="form-horizontal">';
+            buffer = '<form id="' + form.id + '" method="' + form.method + '" class="' + form.classNames.join(' ') + ' form-horizontal">';
         }
         else {
-            buffer = '<form id="' + form.id + '" method="' + form.method + '">';
+            buffer = '<form id="' + form.id + '" method="' + form.method + '" class="' + form.classNames.join(' ') + '">';
         }
         buffer += form.fields.length > 0 ? '<fieldset>' : '';
 

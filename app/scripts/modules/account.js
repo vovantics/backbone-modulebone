@@ -30,6 +30,7 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
 
         routes: {
             "edit": "edit",             // #accounts/edit
+            "join": "join",             // #accounts/join
             "register": "register",             // #accounts/register
             "settings": "settings",             // #accounts/settings
             "deactivate/request": "deactivate", // #accounts/deactivate/request
@@ -118,6 +119,24 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
                         alerts: this.alerts
                     }),
                     "#container-footer": new Meta.Views.Footer()
+                }).render();
+            });
+        },
+
+        join: function() {
+            app.router.anonymousRequired(function() {
+                debug.info("Entering Account.Router.join()...");
+
+                // Set layout and views, then render.
+                app.useLayout("splash").setViews({
+                    "#container-alert": new Alert.Views.List({
+                        collection: this.alerts
+                    }),
+                    "#container-content": new Account.Views.Join({
+                        model: this.account,
+                        session: this.session,
+                        alerts: this.alerts
+                    })
                 }).render();
             });
         },

@@ -4112,8 +4112,62 @@ to use !important in a Base style.
 body {
   padding-bottom: 10px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 87.5%;
   background: #eaeaea url('../img/bg.png');
+}
+
+hr {
+  height: 0;
+  margin: 2em auto 2em auto;
+  border: 0;
+  border-top: solid 1px #BBB;
+  border-bottom: solid 1px white;
+}
+
+form.inset .control-group {
+  margin-bottom: 0;
+}
+
+form.inset select.middle,
+form.inset textarea.middle,
+form.inset input.middle {
+  margin: 0 0 -1px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+form.inset input.first {
+  margin: 0 0 -1px;
+  -webkit-border-radius: 6px 6px 0 0;
+     -moz-border-radius: 6px 6px 0 0;
+          border-radius: 6px 6px 0 0;
+}
+
+form.inset input.last {
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+}
+
+form.inset textarea:focus,
+form.inset input[type="text"]:focus,
+form.inset input[type="password"]:focus,
+form.inset input[type="datetime"]:focus,
+form.inset input[type="datetime-local"]:focus,
+form.inset input[type="date"]:focus,
+form.inset input[type="month"]:focus,
+form.inset input[type="time"]:focus,
+form.inset input[type="week"]:focus,
+form.inset input[type="number"]:focus,
+form.inset input[type="email"]:focus,
+form.inset input[type="url"]:focus,
+form.inset input[type="search"]:focus,
+form.inset input[type="tel"]:focus,
+form.inset input[type="color"]:focus,
+form.inset .uneditable-input:focus {
+  position: relative;
 }
 
 /* Layout rules */
@@ -4176,6 +4230,109 @@ Buttons Module Rules
 https://smacss.com/book/type-module
 -------------------------------------------------------------------*/
 
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.btn {
+  font-size: 12px;
+  font-weight: bold;
+  -webkit-border-radius: 1px;
+          border-radius: 1px;
+}
+
+.btn-connect-facebook {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #283f76;
+  *background-color: #20335f;
+  background-image: -moz-linear-gradient(top, #2d4785, #20335f);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#2d4785), to(#20335f));
+  background-image: -webkit-linear-gradient(top, #2d4785, #20335f);
+  background-image: -o-linear-gradient(top, #2d4785, #20335f);
+  background-image: linear-gradient(to bottom, #2d4785, #20335f);
+  background-repeat: repeat-x;
+  border-color: #20335f #20335f #0d1426;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff2d4785', endColorstr='#ff20335f', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn-connect-facebook:hover,
+.btn-connect-facebook:active,
+.btn-connect-facebook.active,
+.btn-connect-facebook.disabled,
+.btn-connect-facebook[disabled] {
+  color: #ffffff;
+  background-color: #20335f;
+  *background-color: #1a284c;
+}
+
+.btn-connect-facebook:active,
+.btn-connect-facebook.active {
+  background-color: #131e39 \9;
+}
+
+.btn-connect-twitter {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #008cd8;
+  *background-color: #0078b9;
+  background-image: -moz-linear-gradient(top, #0099ec, #0078b9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0099ec), to(#0078b9));
+  background-image: -webkit-linear-gradient(top, #0099ec, #0078b9);
+  background-image: -o-linear-gradient(top, #0099ec, #0078b9);
+  background-image: linear-gradient(to bottom, #0099ec, #0078b9);
+  background-repeat: repeat-x;
+  border-color: #0078b9 #0078b9 #00466d;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0099ec', endColorstr='#ff0078b9', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn-connect-twitter:hover,
+.btn-connect-twitter:active,
+.btn-connect-twitter.active,
+.btn-connect-twitter.disabled,
+.btn-connect-twitter[disabled] {
+  color: #ffffff;
+  background-color: #0078b9;
+  *background-color: #0067a0;
+}
+
+.btn-connect-twitter:active,
+.btn-connect-twitter.active {
+  background-color: #005786 \9;
+}
+
 /*------------------------------------------------------------------
 Box Module Rules
 https://smacss.com/book/type-module
@@ -4210,21 +4367,20 @@ https://smacss.com/book/type-module
 
 /* Sign in and sign up box */
 
-#form-session-login-outer,
-#form-account-register-outer {
+#session-login-outer,
+#account-register-outer,
+#account-join-outer {
   max-width: 220px;
   padding: 19px 29px 29px;
   margin: 0 auto 20px;
   margin-top: 75px;
   text-align: center;
-  background-color: #fff;
-  border: 1px solid #e5e5e5;
-  -webkit-border-radius: 5px;
-     -moz-border-radius: 5px;
-          border-radius: 5px;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.form-actions {
+  padding: 0;
+  background-color: inherit;
+  border-top: 0;
 }
 
 /* Todo app styles */

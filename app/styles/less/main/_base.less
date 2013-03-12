@@ -13,7 +13,67 @@ to use !important in a Base style.
 -------------------------------------------------------------------*/
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 87.5%;
+    /*font-size: 81.25%;*/
+
     padding-bottom: 10px;
     background: #eaeaea url('../img/bg.png');
+}
+
+hr {
+    height: 0;
+    border: 0;
+    border-top: solid 1px #BBB;
+    border-bottom: solid 1px white;
+    margin: 2em auto 2em auto;
+}
+
+form.inset {
+
+    .control-group {
+        margin-bottom: 0;
+    }
+
+    select.middle,
+    textarea.middle,
+    input.middle {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        margin: 0 0 -1px;
+    }
+
+    input.first {
+        -webkit-border-radius: 6px 6px 0 0;
+        -moz-border-radius: 6px 6px 0 0;
+        border-radius: 6px 6px 0 0;
+        margin: 0 0 -1px;
+    }
+
+    input.last {
+        -webkit-border-radius: 0 0 6px 6px;
+        -moz-border-radius: 0 0 6px 6px;
+        border-radius: 0 0 6px 6px;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="datetime"]:focus,
+    input[type="datetime-local"]:focus,
+    input[type="date"]:focus,
+    input[type="month"]:focus,
+    input[type="time"]:focus,
+    input[type="week"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    input[type="url"]:focus,
+    input[type="search"]:focus,
+    input[type="tel"]:focus,
+    input[type="color"]:focus,
+    .uneditable-input:focus {
+        position: relative;
+    }
+
 }

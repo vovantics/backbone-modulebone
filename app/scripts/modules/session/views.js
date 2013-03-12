@@ -21,7 +21,7 @@ function(app, _, Backbone, Alert, Utils) {
     Views.Login = Backbone.View.extend({
         template: "session/login",
 
-        tagName: 'div id="form-session-login-outer"',
+        tagName: 'div id="session-login-outer"',
 
         // Delegated events for creating new items.
         events: {
@@ -40,16 +40,17 @@ function(app, _, Backbone, Alert, Utils) {
 
             var form = {
                 id: 'form-session-login',
+                classNames: ['inset'],
                 fields: [
-                    { label: 'Email address', name: 'email', required: true, inputClassNames: [] },
-                    { label: 'Password', name: 'password', type: 'password', required: true, inputClassNames: [] }
+                    { label: 'Email address', name: 'email', required: true, inputClassNames: ['first'] },
+                    { label: 'Password', name: 'password', type: 'password', required: true, inputClassNames: ['last'] }
                     /*{ label: 'Remember me', type: 'options',
                         options: [
                             { label: 'Remember me', name: 'remember_me', value: 'yes' }
                         ], required: true }*/
                 ],
                 buttons: [
-                    { id: 'btn-login', classNames: [ 'btn', 'btn-primary', 'btn-block' ], label : 'Log me in!' }
+                    { id: 'btn-login', classNames: [ 'btn', 'btn-block' ], label : 'Log me in!' }
                 ]
             };
 

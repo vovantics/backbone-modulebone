@@ -265,21 +265,21 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
                 id: 'form-account-edit',
                 values : this.model.toJSON(),
                 fields : [
-                    { label: 'First Name', name: 'first_name' },
-                    { label: 'Last Name', name: 'last_name' },
-                    { label: 'Username', name: 'username', required: true},
-                    { label: 'Email', name: 'email', required: true },
+                    { label: 'First Name', name: 'first_name', inputClassNames: ['first'] },
+                    { label: 'Last Name', name: 'last_name', inputClassNames: ['middle'] },
+                    { label: 'Username', name: 'username', required: true, inputClassNames: ['middle'] },
+                    { label: 'Email', name: 'email', required: true, inputClassNames: ['middle'] },
                     { label: 'Gender', name: 'gender', type: 'select',
                         options: [
                             { id: '', name: '---' },
                             { id: 'male', name: 'Male' },
                             { id: 'female', name: 'Female' }
-                        ]
+                        ], inputClassNames: ['middle']
                     },
-                    { label: 'DOB', name: 'dob', type: 'date' },
-                    { label: 'Phone', name: 'phone' },
-                    { label: 'Bio', name: 'bio', type: 'textarea' },
-                    { label: 'Website', name: 'url' }
+                    { label: 'DOB', name: 'dob', type: 'date', inputClassNames: ['middle'] },
+                    { label: 'Phone', name: 'phone', inputClassNames: ['middle'] },
+                    { label: 'Bio', name: 'bio', type: 'textarea', inputClassNames: ['middle'] },
+                    { label: 'Website', name: 'url', inputClassNames: ['last'] }
                 ],
                 buttons : [
                     { classNames : [ 'btn', 'btn-primary' ], label : 'Save' },
@@ -486,10 +486,39 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         template: "account/password_reset_done"
     });
 
+    Views.Join = Backbone.View.extend({
+        template: "account/join",
+
+        tagName: 'div id="account-join-outer"',
+
+        // Delegated events for creating new items.
+        events: {
+            'click #create-account': 'navigateToRegister'
+        },
+
+        navigateToRegister: function(e) {
+            debug.info("Entering Views.Join.navigateToRegister()...");
+
+            // Cancel default action of the keypress event.
+            e.preventDefault();
+
+            this.$el.addClass('animated fadeOutLeft');
+            setTimeout(function() {
+                app.router.navigate('accounts/register/', { trigger: true });
+            }, 200);
+        },
+
+        serialize: function() {
+            debug.info("Entering Views.Join.serialize()...");
+
+            return { appname: app.name };
+        }
+    });
+
     Views.Register = Backbone.View.extend({
         template: "account/register",
 
-        tagName: 'div id="form-account-register-outer"',
+        tagName: 'div id="account-register-outer" class="animated fadeInRight"',
 
         // Delegated events for creating new items.
         events: {
@@ -509,9 +538,6 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
 
         afterRender: function() {
             debug.info("Entering Views.PasswordReset.afterRender()...");
-
-            // Fade the content in.
-            this.$(".accounts-form").addClass('animated fadeIn');
 
             this.$("#form-account-register").validate({
                 highlight: function(element) {
@@ -587,14 +613,15 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
 
             var form = {
                 id: 'form-account-register',
+                classNames: ['inset'],
                 fields : [
-                    { label: 'Username', name: 'username', value: '', required: true },
-                    { label: 'Email', name: 'email', value: '', required: true },
-                    { label: 'Password', name: 'password', type: 'password', value: '', required: true },
-                    { label: 'Password again', name: 'password_again', type: 'password', value: '', required: true }
+                    { label: 'Username', name: 'username', value: '', required: true, inputClassNames: ['first'] },
+                    { label: 'Email', name: 'email', value: '', required: true, inputClassNames: ['middle'] },
+                    { label: 'Password', name: 'password', type: 'password', value: '', required: true, inputClassNames: ['middle'] },
+                    { label: 'Password again', name: 'password_again', type: 'password', value: '', required: true, inputClassNames: ['last'] }
                 ],
                 buttons : [
-                    { classNames : [ 'btn', 'btn-primary' ], label : 'Create account' }
+                    { classNames : [ 'btn', 'btn-success', 'btn-block' ], label : 'Create account' }
                 ]
             };
 
