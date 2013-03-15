@@ -1,6 +1,6 @@
 # backbone-modulebone
 
-backbone-modulebone is a frontend heavy single-page HTML5 boilerplate app with a Todo app, notifiactions, authentication, authorization, registration, profile edit, and password reset/change.
+backbone-modulebone is a frontend heavy single-page HTML5 boilerplate app with a Todo app, alerts, authentication, authorization, registration, profile edit, and password reset/change.
 
 "We search for some kind of harmony between two intangibles: a form we have not yet designed and a context we cannot properly describe" -Christopher Alexander, the father of design patterns.
 
@@ -55,7 +55,7 @@ Code is divided into [modules](http://weblog.bocoup.com/organizing-your-backbone
 
 ## [Backbone.js](http://backbonejs.org/)
 
-I'm not into JavaScript spaghetti. The Backbone.js solves that problem by providing a MV framework that includes useful constructs such as Event, Router, Model, Collection, and View. It's dependent on Underscore.js (or Lo-Dash). Underscore provides a toolbelt of functional programming support for manipulating common JS data structures.
+The Backbone.js solves the JavaScript spaghetti problem by providing a MV framework that includes useful constructs such as Event, Router, Model, Collection, and View. It's dependent on Underscore.js (or Lo-Dash). Underscore provides a toolbelt of functional programming support for manipulating common JS data structures.
 
 Continuing with the module pattern, each module can define its own module-specific routes. This is accomplished using the [Backbone.subroute](https://github.com/ModelN/backbone.subroute) plugin. Authenticated views require a session before the route is triggered. The [Backbone.routefilter](https://github.com/boazsender/backbone.routefilter) plugin provides before and after filters.
 
@@ -93,13 +93,10 @@ Responsive templates are styled using Twitter Bootstrap and its JavaScript plugi
 
 [Yeoman](http://yeoman.io/) is a collection of tools and best practices for scaffolding, package management, and build, preview, and test automation.
 
-### Scaffolding
+### Install
 
-This app was scaffolded using the yeoman Backbone.js generator `yeoman init backbone`.
-
-1. [Installed yeoman](https://github.com/yeoman/yeoman/wiki/Manual-Install)
-1. Init
-1. Installed packages. This add them to the `component` and `app/component` directories. The components were then copied to the `app/scripts/vendor` directory.
+1. [Install yeoman](https://github.com/yeoman/yeoman/wiki/Manual-Install)
+1. Install yeoman (bower) packages. This adds them to the `component` and `app/component` directories.
 
         $ yeoman install backbone
         $ yeoman install bootstrap
@@ -113,13 +110,16 @@ This app was scaffolded using the yeoman Backbone.js generator `yeoman init back
         $ yeoman install yeoman install requirejs-i18n
         $ yeoman install yeoman install requirejs-text
 
-1. Installed grunt plugins as devDependencies. This will add them to `package.json` after installation.
+1. Install grunt plugins. This adds them to `package.json` after installation.
 
         $ npm install -D grunt-contrib-handlebars
         $ npm install -D grunt-recess
         $ npm install -D grunt-s3
+
+1. Install packages. This adds them to `package.json` after installation.
+
         $ npm install -D jed
-        $ sudo npm install -g mocha
+        $ npm install -D mocha
 
 1. Download [ba-debug.js](https://github.com/cowboy/javascript-debug/blob/master/ba-debug.js) and copy to the `app/scripts/vendor` directory.
 
@@ -127,19 +127,21 @@ This app was scaffolded using the yeoman Backbone.js generator `yeoman init back
 
 Yeoman comes with a built-in preview server. While the server is running, the LiveReload watch process automatically compiles source files and refreshes your browser whenever a change is made. Scripts are automatically run against JSHint to ensure they're following language best-practices. The sources can be configured in `Gruntfile.js`.
 
+If you'd like to use additional Yeoman (bower) packages, `yeoman install <package name>` them and then copy the necessary files from the `component`/`app/component` directories to the `app/scripts/vendor` directory.
+
 * Run yeoman server, write code, and watch your changes auto reload!
 
         $ yeoman server
 
-* Manual lint scripts
+* Lint JavaScript code for errors and potential problems.
 
         $ yeoman lint
 
 ### Build process
 
-The build process constructs an optimized version of the app that's ready to deploy. The build process is an opinionated workflow. I substituted two tasks. Coffeescript is not used, so I aliased the coffee task with nothing. Less CSS is used instead of SASS so I aliased the compass task with the [recess](https://github.com/twitter/recess) task.
+The build process constructs an optimized version of the app that's ready to deploy. The build process is an opinionated workflow. I substituted two tasks. Coffeescript is not used, so I aliased the coffee task with nothing. Less CSS is used instead of SASS so the compass task was aliased with the [recess](https://github.com/twitter/recess) task.
 
-* Create dist directory containing optimized version of app ready for deploying
+* Create dist directory containing optimized version of app ready for deploying.
 
         $ yeoman build
 
@@ -147,17 +149,34 @@ The build process constructs an optimized version of the app that's ready to dep
 
 Unit tests are run in a headless WebKit via PhantomJS.
 
-* Run yeoman server and mocha test runner
+* Run yeoman server and mocha test runner.
 
         $ yeoman server:test
 
+### Deployment process
+
+Once deployed, this app will be a [static website hosted on Amazon S3](http://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html).
+Deployment is done with [grunt-s3](https://npmjs.org/package/grunt-s3), a grunt task that automates the upload/download/delete of files to/from Amazon S3.
+
+1. Create a `setenv.sh` script containing the following:
+
+        export AWS_ACCESS_KEY_ID=<ACCESS_KEY_ID>
+        export AWS_SECRET_ACCESS_KEY=<SECRET_ACCESS_KEY>
+
+1. Build your app if you haven't done so yet.
+
+1. Deploy your code.
+
+        $ yeoman deploy
+
 ## TODO
 
+* Debug level should be predicated on environment variable.
 * Delete auth-buttons.less
-* Animate #sessions/login, #accounts/register/, #accounts/join like delicious
+* Make forms resize like so: http://twitter.github.com/bootstrap/examples/signin.html
+* Configure grunt-contrib-handlebars to precompile Handlebars templates to JST files
 * Update all text to use Jed & i18n
-* Deploy to Amazon S3 using https://github.com/pifantastic/grunt-s3
-* Dynamic documentation using [dox](https://github.com/visionmedia/dox) / [jsdoc-toolkit](http://code.google.com/p/jsdoc-toolkit/)
+* Dynamic documentation using [dox](https://github.com/visionmedia/dox) / [jsdoc-toolkit](http://code.google.com/p/jsdoc-toolkit/) / [docco](http://lostechies.com/derickbailey/2011/12/14/annotated-source-code-as-documentation-with-docco/)
 
 ## Acknowledgements
 

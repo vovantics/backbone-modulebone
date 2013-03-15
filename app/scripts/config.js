@@ -1,8 +1,10 @@
 // Set the require.js configuration for your application.
 require.config({
 
-    // Initialize the application with the main application file.
-    deps: ["main"],
+    appDir: '../',
+    baseUrl: "scripts",
+
+    deps: ["main"], // Initialize application with main file.
 
     // Do a hard override of the locale here
     // The default is to auto-detect from browser defaults
@@ -16,7 +18,7 @@ require.config({
         'jquery.validate': 'vendor/jquery.validate',
         underscore: 'vendor/lodash.underscore',
         backbone: 'vendor/backbone/backbone',
-        'backbone.layoutmanager': 'vendor/backbone.layoutmanager/backbone.layoutmanager',
+        'backbone.layoutmanager': 'vendor/backbone.layoutmanager',
         'backbone.localstorage': 'vendor/backbone/backbone-localstorage',
         'backbone.routefilter': 'vendor/backbone.routefilter',
         'backbone.subroute': 'vendor/backbone.subroute',

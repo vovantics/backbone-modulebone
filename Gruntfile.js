@@ -20,7 +20,7 @@ module.exports = function( grunt ) {
       dir: 'app/components'
     },
 
-    // TODO: Configure the handlebars task for building
+    // TODO: Configure the handlebars task for precompilation to JST file
     handlebars: {
       compile: {
         files: {
@@ -85,7 +85,7 @@ module.exports = function( grunt ) {
           'app/*.html',
           //'app/styles/**/*.css',
           //'app/scripts/modules/**/*.js',
-          'app/images/**/*'
+          'app/img/**/*'
         ],
         tasks: 'reload'
       }
@@ -154,7 +154,7 @@ module.exports = function( grunt ) {
     rev: {
       js: 'modules/**/*.js',
       css: 'styles/**/*.css',
-      img: 'images/**'
+      img: 'img/**'
     },
 
     // Everything in index.html between build:js and endbuild will be
@@ -203,32 +203,31 @@ module.exports = function( grunt ) {
 
     // TODO
     //aws: '<json:config-aws.json>',
-
-    // If key and secret not passed with your config, grunt-s3 will
-    // fallback to the following environment variables:
-    // AWS_ACCESS_KEY_ID
-    // AWS_SECRET_ACCESS_KEY
     s3: {
-      options: {
-        key: '<%= aws.key %>',
-        secret: '<%= aws.secret %>',
-        bucket: '<%= aws.bucket %>',
-        access: 'public-read'
-      },
-      prod: {
-        // These options override the defaults
-        options: {
-          encodePaths: true,
-          maxOperations: 20,
-          debug: false
-        },
+      // This is specific to this app.
+      //
+      // See https://npmjs.org/package/grunt-s3
+      // If key and secret not passed with your config, grunt-s3 will
+      // fallback to the following environment variables:
+      // AWS_ACCESS_KEY_ID
+      // AWS_SECRET_ACCESS_KEY
+      //
+      //key: 'YOUR KEY',
+      //secret: 'SECRET KEY',
+      bucket: 'backbone-modulebone',  // TODO: Change me
+      access: 'public-read',
+      debug: false,
+      //prod: {
         // Files to be uploaded.
-        upload: [{
-          src: "dist",
-          dest: "/",
-          gzip: true
-        }]
-      }
+        upload: [
+          {
+            rel: "dist",
+            src: "dist/**/*.*",
+            dest: "/",
+            gzip: false
+          }
+        ]
+      //}
     }
   });
 
