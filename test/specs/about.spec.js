@@ -1,11 +1,17 @@
+/*global define:false, describe: false, before:false, after: false, it:false */
 define([
-    // Modules
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+
+    // Modules.
     'modules/about',
     'modules/session',
-    'modules/alert',
-    'modules/account'
+    'modules/alert'
 ],
-function(About, Session, Alert, Account) {
+function($, _, Backbone, About, Session, Alert) {
+    'use strict';
 
     describe('About Module', function() {
 
@@ -15,7 +21,7 @@ function(About, Session, Alert, Account) {
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering About Module / Viewing the terms before()...");
+                console.log('[TEST] Entering About Module / Viewing the terms before()...');
 
                 // Instantiate layout.
                 var layout = new Backbone.Layout();
@@ -35,7 +41,7 @@ function(About, Session, Alert, Account) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -45,7 +51,7 @@ function(About, Session, Alert, Account) {
             });
 
             after(function(done) {
-                console.log("[TEST] Entering About Module / Viewing the terms after()...");
+                console.log('[TEST] Entering About Module / Viewing the terms after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();

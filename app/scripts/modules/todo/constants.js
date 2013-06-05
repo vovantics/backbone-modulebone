@@ -1,6 +1,7 @@
+/*global define: false */
 define([], function() {
-  return {
-
-    ENTER_KEY: 13
-  };
+	'use strict';
+	return {
+		ENTER_KEY: 13
+	};
 });

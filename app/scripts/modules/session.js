@@ -1,22 +1,25 @@
+/*global define: false */
 define([
     // Application.
-    "app",
+    'app',
 
-    // Libs
-    "backbone",
+    // Libraries.
+    'backbone',
+    'debug',
 
     // Views
-    "modules/session/views",
+    'modules/session/views',
 
     // Modules
     'modules/base',
     'modules/alert',
 
     // Plugins
-    'vendor/backbone.subroute'
+    'backbone.subroute'
 ],
 
-function(app, Backbone, Views, Base, Alert) {
+function(app, Backbone, debug, Views, Base, Alert) {
+    'use strict';
 
     // Create a new module
     var Session = app.module();
@@ -27,35 +30,35 @@ function(app, Backbone, Views, Base, Alert) {
     Session.Router = Backbone.SubRoute.extend({
 
         routes: {
-            "login?next=:next": "login",
-            "login": "login"
+            'login?next=:next': 'login',
+            'login': 'login'
         },
 
         initialize: function(options) {
-            debug.info("Entering Session.Router.initialize()...");
+            debug.info('Entering Session.Router.initialize()...');
 
             this.session = options.session;
             this.alerts = options.alerts;
         },
 
         before: function( route ) {
-            debug.info("Entering Session.Router.before(" + route + ")...");
+            debug.info('Entering Session.Router.before(' + route + ')...');
         },
 
         login: function(next) {
             app.router.anonymousRequired(function() {
-                debug.info("Entering Session.Router.login(" + next + ")...");
+                debug.info('Entering Session.Router.login(' + next + ')...');
 
                 // Use the empty layout and set views.
-                app.useLayout("splash").setViews({
+                app.useLayout('splash').setViews({
 
                     // Attach the form View to #container-content element.
-                    "#container-alert": new Alert.Views.List({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
 
                     // Attach the form View to #container-content element.
-                    "#container-content": new Session.Views.Login({
+                    '#container-content': new Session.Views.Login({
                         model: this.session,
                         alerts: this.alerts,
                         next: next !== undefined ? decodeURIComponent(next) : null
@@ -80,7 +83,7 @@ function(app, Backbone, Views, Base, Alert) {
         },
 
         initialize: function() {
-            debug.info("Entering Session.Model.initialize()...");
+            debug.info('Entering Session.Model.initialize()...');
 
             Base.Model.prototype.initialize.call(this);
         },
@@ -93,9 +96,9 @@ function(app, Backbone, Views, Base, Alert) {
         // is returned by the server, in fetch, and save. Returns the
         // attributes hash to be set on the model
         parse: function(response) {
-            debug.info("Entering Session.Model.parse()...");
+            debug.info('Entering Session.Model.parse()...');
 
-            if (response.status == 'success' && response.data.auth === true) {
+            if (response.status === 'success' && response.data.auth === true) {
                 this.unset('email', {silent: true});
                 this.unset('password', {silent: true});
                 return {
@@ -113,7 +116,7 @@ function(app, Backbone, Views, Base, Alert) {
         // server to delete a REST resource. Override the session
         // delete method to also clear the model's attributes.
         destroy: function(options) {
-            debug.info("Entering Session.Model.destroy()...");
+            debug.info('Entering Session.Model.destroy()...');
 
             options = options || {};
 

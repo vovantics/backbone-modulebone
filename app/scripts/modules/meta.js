@@ -1,6 +1,13 @@
+/*global define: false */
 define([
     // Application.
-    "app",
+    'app',
+
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+    'debug',
 
     // Modules
     'modules/base',
@@ -8,15 +15,16 @@ define([
     'modules/utils'
 ],
 
-function(app, Base, Alert, Utils) {
+function(app, $, _, Backbone, debug, Base, Alert, Utils) {
+    'use strict';
 
     var Meta = app.module();
 
     Meta.Views.Landing = Backbone.View.extend({
-        template: "meta/landing",
+        template: 'meta/landing',
 
         initialize: function() {
-            debug.info("Entering Meta.Views.Landing.initialize()...");
+            debug.info('Entering Meta.Views.Landing.initialize()...');
         }
     });
 
@@ -28,13 +36,13 @@ function(app, Base, Alert, Utils) {
         urlRoot: 'http://' + app.serverHost + '/mail/',
 
         initialize: function() {
-            debug.info("Entering Meta.Mail.initialize()...");
+            debug.info('Entering Meta.Mail.initialize()...');
             Base.Model.prototype.initialize.call(this);
         }
     });
 
     Meta.Views.Contact = Backbone.View.extend({
-        template: "meta/contact",
+        template: 'meta/contact',
 
         // Delegated events for creating new items.
         events: {
@@ -42,18 +50,18 @@ function(app, Base, Alert, Utils) {
         },
 
         initialize: function() {
-            debug.info("Entering Meta.Views.Contact.initialize()...");
+            debug.info('Entering Meta.Views.Contact.initialize()...');
             this.alerts = this.options.alerts;
         },
 
         beforeRender: function() {
-            debug.info("Entering Meta.Views.Contact.beforeRender()...");
+            debug.info('Entering Meta.Views.Contact.beforeRender()...');
         },
 
         afterRender: function() {
-            debug.info("Entering Meta.Views.Contact.afterRender()...");
+            debug.info('Entering Meta.Views.Contact.afterRender()...');
 
-            this.$("#form-meta-contact").validate({
+            this.$('#form-meta-contact').validate({
                 highlight: function(element) {
                     $(element).parent('div').parent('div').addClass('error');
                 },
@@ -65,7 +73,7 @@ function(app, Base, Alert, Utils) {
         },
 
         sendMailOnSubmit: function(e) {
-            debug.info("Entering Meta.Views.Contact.sendMailOnSubmit()...");
+            debug.info('Entering Meta.Views.Contact.sendMailOnSubmit()...');
 
             // Cancel default action of the submit event.
             e.preventDefault();
@@ -80,7 +88,7 @@ function(app, Base, Alert, Utils) {
 
             this.model.save(data, {
                 success: function(model, response, options){
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                     }
                     else {
@@ -88,7 +96,7 @@ function(app, Base, Alert, Utils) {
                         _.each(arr, function(field) {
                             that.$('#' + field.name).val('');
                         });
-                        that.alerts.add(new Alert.Model({msg: "Thanks for your message. We'll get back to you shortly.", level: 'success'}));
+                        that.alerts.add(new Alert.Model({msg: 'Thanks for your message. We\'ll get back to you shortly.', level: 'success'}));
                     }
                 },
                 alerts: that.alerts
@@ -96,7 +104,7 @@ function(app, Base, Alert, Utils) {
         },
 
         serialize: function() {
-            debug.info("Entering Meta.Views.Contact.serialize()...");
+            debug.info('Entering Meta.Views.Contact.serialize()...');
 
             var form = {
                 id: 'form-meta-contact',
@@ -117,10 +125,10 @@ function(app, Base, Alert, Utils) {
     });
 
     Meta.Views.Footer = Backbone.View.extend({
-        template: "meta/footer",
+        template: 'meta/footer',
 
         initialize: function() {
-            debug.info("Entering Meta.Views.Footer.initialize()...");
+            debug.info('Entering Meta.Views.Footer.initialize()...');
         }
     });
 

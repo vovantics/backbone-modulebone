@@ -1,44 +1,50 @@
-<!DOCTYPE HTML>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Mocha + Chai Test Suite</title>
-    <link rel="stylesheet" href="lib/mocha-1.2.2/mocha.css">
-  </head>
-  <body>
-    <div id="mocha"></div>
-    <div id="sandbox" style="overflow: hidden; height: 1px;"></div>
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Mocha Spec Runner</title>
+  <link rel="stylesheet" href="lib/mocha-1.2.2/mocha.css">
+</head>
+<body>
+  <div id="mocha"></div>
+  <div id="sandbox" style="overflow: hidden; height: 1px;"></div>
+  <script src="lib/chai.js"></script>
+  <script src="lib/sinon-1.5.2.js"></script>
+  <script src="lib/mocha-1.2.2/mocha.js"></script>
+  <script src="lib/expect.js"></script>
+  <script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>
 
-    <script src="lib/expect.js"></script>
-    <script src="lib/mocha-1.2.2/mocha.js"></script>
-    <script src="lib/chai.js"></script>
-    <script src="lib/sinon-1.5.2.js"></script>
-    <script type="text/javascript" src="scripts/vendor/require/require.js" data-main="scripts/config"></script>
+  <script>
 
-    <script>
-      // Chai
+      mocha.setup({ui: 'bdd', ignoreLeaks: true});
       var assert = chai.assert,
           should = chai.should(),
           expect = chai.expect;
 
-      mocha.setup({
-        ui: 'bdd',
-        ignoreLeaks: true
+      var upDirs = '../../';
+      var specs = upDirs + 'specs/';
+
+      require([
+              specs + 'about.spec',
+              specs + 'account.spec',
+              specs + 'meta.spec',
+              specs + 'session.spec',
+              specs + 'todo.spec'
+              ],
+              function(
+                aboutSpec,
+                accountSpec,
+                metaSpec,
+                sessionSpec,
+                todoSpec) {
+
+          //console.log('======================');
+          //console.log(aboutSpec);
+          //console.log('======================');
+
+          // below contains mocha.run()
+          require([upDirs + 'runner/mocha']);
       });
-
-      var specs = [];
-
-      specs.push('../spec/todo');
-      specs.push('../spec/session');
-      specs.push('../spec/account');
-      specs.push('../spec/meta');
-      specs.push('../spec/about');
-
-      require(specs, function(){
-          $(function(){
-              mocha.run();//.globals(['Backbone']);
-          });
-      });
-    </script>
-  </body>
+  </script>
+</body>
 </html>

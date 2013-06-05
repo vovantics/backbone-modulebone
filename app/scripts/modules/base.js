@@ -1,14 +1,20 @@
+/*global define: false */
 define([
     // Application.
-    "app",
+    'app',
+
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+    'debug',
 
     // Modules
-    "modules/alert",
-
-    'debug'
+    'modules/alert',
 ],
 
-function(app, Alert) {
+function(app, $, _, Backbone, debug, Alert) {
+    'use strict';
 
     var Base = {};
 
@@ -19,11 +25,11 @@ function(app, Alert) {
         // Add trailing slash to Model url.
         url: function() {
             var origUrl = Backbone.Model.prototype.url.call(this);
-            return origUrl + (origUrl.charAt(origUrl.length - 1) == '/' ? '' : '/');
+            return origUrl + (origUrl.charAt(origUrl.length - 1) === '/' ? '' : '/');
         },
 
         initialize: function() {
-            debug.info("Entering Base.Model.initialize()...");
+            debug.info('Entering Base.Model.initialize()...');
 
             // Hook into jquery
             // Use withCredentials to send the server cookies
@@ -37,14 +43,14 @@ function(app, Alert) {
         },
 
         save: function(attributes, options) {
-            debug.info("Entering Base.Model.save()...");
+            debug.info('Entering Base.Model.save()...');
 
             options = options || {};
 
             // Handle non-200 HTTP response.
             options.error = function(model, xhr, options) {
                 // TODO: Handle 300, 400, and 500 errors
-                debug.debug("options.error xhr = [" + JSON.stringify(xhr) + "]");
+                debug.debug('options.error xhr = [" + JSON.stringify(xhr) + "]');
                 options.alerts.add(new Alert.Model({msg: 'No Internet Connection.', level: 'danger'}));
             };
 
@@ -52,7 +58,7 @@ function(app, Alert) {
         },
 
         fetch: function(options) {
-            debug.info("Entering Base.Model.fetch()...");
+            debug.info('Entering Base.Model.fetch()...');
 
             options = options || {};
 
@@ -65,7 +71,7 @@ function(app, Alert) {
         },
 
         destroy: function(options) {
-            debug.info("Entering Base.Model.destroy()...");
+            debug.info('Entering Base.Model.destroy()...');
 
             options = options || {};
 

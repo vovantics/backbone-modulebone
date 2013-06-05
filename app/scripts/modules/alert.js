@@ -1,11 +1,18 @@
+/*global define: false */
 define([
     // Application.
-    "app",
+    'app',
+
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+    'debug',
 
     'bootstrap'
 ],
-
-function(app) {
+function(app, $, _, Backbone, debug) {
+    'use strict';
 
     var Alert = app.module();
 
@@ -22,14 +29,14 @@ function(app) {
         },
 
         initialize: function() {
-            _.bindAll(this, "timedOut");
+            _.bindAll(this, 'timedOut');
             if (this.get('level') !== 'danger') {
-                setTimeout(this.timedOut, this.get("timeout") * 1000.0);
+                setTimeout(this.timedOut, this.get('timeout') * 1000.0);
             }
         },
 
         timedOut: function() {
-            this.trigger("timeout");
+            this.trigger('timeout');
         }
     });
 
@@ -53,12 +60,11 @@ function(app) {
         tagName: 'div id="messages"',
 
         initialize: function() {
-            debug.info("Entering Alert.Views.List.initialize()...");
+            debug.info('Entering Alert.Views.List.initialize()...');
 
             // When model is added to this collection, insert item
             // view.
-            this.collection.on("add", function(item) {
-                alert("ALERT ADDED TO COLLECTION! item=[" + JSON.stringify(item) + "]");    // TODO: Remove
+            this.collection.on('add', function(item) {
 
                 // Change the state of the layout.
                 if (this.collection.length > 0 && !$('#layout').hasClass('has-alerts')) {
@@ -72,7 +78,7 @@ function(app) {
 
             // When model is removed from this collection, restore
             // layout to its original state.
-            this.collection.on("remove", function(item) {
+            this.collection.on('remove', function(item) {
                 if (this.collection.length === 0 && $('#layout').hasClass('has-alerts')) {
                     $('#layout').removeClass('has-alerts');
                 }
@@ -80,7 +86,7 @@ function(app) {
         },
 
         beforeRender: function() {
-            debug.info("Entering Alert.Views.List.beforeRender()...");
+            debug.info('Entering Alert.Views.List.beforeRender()...');
 
             // Change the state of the layout.
             if (this.collection.length > 0 && !$('#layout').hasClass('has-alerts')) {
@@ -103,34 +109,34 @@ function(app) {
     });
 
     Alert.Views.Item = Backbone.View.extend({
-        template: "alert/item",
+        template: 'alert/item',
 
-        tagName: "div",
+        tagName: 'div',
 
         // Delegated events specific to an item.
         events: {
-            "click .alert":    "removeOnClick"
+            'click .alert':    'removeOnClick'
         },
 
         initialize: function() {
-            debug.info("Entering Alert.Views.Item.initialize()...");
+            debug.info('Entering Alert.Views.Item.initialize()...');
 
             // Binds the remove callback function to this
             // model's timeout event.
-            this.model.on("timeout", function() {
+            this.model.on('timeout', function() {
                 this.removeItem();
             }, this);
 
             // Removes this view from the DOM, and calls stopListening
             // to remove any bound events that the view has listenTo'd.
-            this.model.on("destroy", function() {
+            this.model.on('destroy', function() {
                 this.remove();
             }, this);
         },
 
         // Provides the view with this collection's data.
         serialize: function() {
-            debug.info("Entering Alert.Views.Item.serialize()...");
+            debug.info('Entering Alert.Views.Item.serialize()...');
 
             return {
                 msg: this.model.get('msg'),
@@ -139,7 +145,7 @@ function(app) {
         },
 
         removeOnClick: function(e) {
-            debug.info("Entering Alert.Views.Item.removeOnClick()...");
+            debug.info('Entering Alert.Views.Item.removeOnClick()...');
 
             // Cancel default action of the click event.
             //e.preventDefault();
@@ -148,7 +154,7 @@ function(app) {
         },
 
         removeItem: function() {
-            debug.info("Entering Alert.Views.Item.remove()...");
+            debug.info('Entering Alert.Views.Item.remove()...');
 
             // Fade the item out.
             this.$el.addClass('animated fadeOut');
@@ -156,7 +162,7 @@ function(app) {
             // Trigger the close event so Twitter Bootstrap's Alert
             // script removes the alert from the DOM.
             //this.$el.trigger('close');
-            //this.$el.find(".alert").alert('close');
+            //this.$el.find('.alert').alert('close');
 
             // Remove the model from the collection.
             //this.model.destroy();

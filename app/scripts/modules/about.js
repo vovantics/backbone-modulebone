@@ -1,18 +1,23 @@
+/*global define: false */
 define([
     // Application.
-    "app",
+    'app',
+
+    // Libraries.
+    'backbone',
+    'debug',
 
     // Modules.
-    "modules/alert",
-    "modules/session",
-    "modules/account",
-    "modules/header",
-    "modules/meta",
+    'modules/alert',
+    'modules/session',
+    'modules/account',
+    'modules/header',
+    'modules/meta',
 
-    "modules/nls"
+    'modules/nls'
 ],
-
-function(app, Alert, Session, Account, Header, Meta) {
+function(app, Backbone, debug, Alert, Session, Account, Header, Meta) {
+    'use strict';
 
     var About = app.module();
 
@@ -22,14 +27,14 @@ function(app, Alert, Session, Account, Header, Meta) {
     About.Router = Backbone.SubRoute.extend({
 
         routes: {
-            "us": "company", // #about/us/
-            "faq": "faq", // #about/faq/
-            "legal/terms": "terms", // #about/legal/terms/
-            "legal/privacy": "privacy" // #about/legal/privacy/
+            'us': 'company', // #about/us/
+            'faq': 'faq', // #about/faq/
+            'legal/terms': 'terms', // #about/legal/terms/
+            'legal/privacy': 'privacy' // #about/legal/privacy/
         },
 
         initialize: function(options) {
-            debug.info("Entering About.Router.initialize()...");
+            debug.info('Entering About.Router.initialize()...');
 
             this.session = options.session;
             this.account = options.account;
@@ -37,74 +42,74 @@ function(app, Alert, Session, Account, Header, Meta) {
         },
 
         before: function( route ) {
-            debug.info("Entering About.Router.before(" + route + ")...");
+            debug.info('Entering About.Router.before(' + route + ')...');
         },
 
         company: function() {
-            debug.info("Entering About.Router.company()...");
+            debug.info('Entering About.Router.company()...');
 
-            app.useLayout("twocolumn").setViews({
-                "#container-nav": new Header.Views.Nav({
+            app.useLayout('twocolumn').setViews({
+                '#container-nav': new Header.Views.Nav({
                     model: this.session,
                     alerts: this.alerts
                 }),
-                "#container-alert": new Alert.Views.List({
+                '#container-alert': new Alert.Views.List({
                     collection: this.alerts
                 }),
-                "#container-menu": new About.Views.Menu(),
-                "#container-content": new About.Views.Company(),
-                "#container-footer": new Meta.Views.Footer()
+                '#container-menu': new About.Views.Menu(),
+                '#container-content': new About.Views.Company(),
+                '#container-footer': new Meta.Views.Footer()
             }).render();
         },
 
         faq: function() {
-            debug.info("Entering About.Router.faq()...");
+            debug.info('Entering About.Router.faq()...');
 
-            app.useLayout("twocolumn").setViews({
-                "#container-nav": new Header.Views.Nav({
+            app.useLayout('twocolumn').setViews({
+                '#container-nav': new Header.Views.Nav({
                     model: this.session,
                     alerts: this.alerts
                 }),
-                "#container-alert": new Alert.Views.List({
+                '#container-alert': new Alert.Views.List({
                     collection: this.alerts
                 }),
-                "#container-menu": new About.Views.Menu(),
-                "#container-content": new About.Views.Faq(),
-                "#container-footer": new Meta.Views.Footer()
+                '#container-menu': new About.Views.Menu(),
+                '#container-content': new About.Views.Faq(),
+                '#container-footer': new Meta.Views.Footer()
             }).render();
         },
 
         terms: function() {
-            debug.info("Entering About.Router.terms()...");
+            debug.info('Entering About.Router.terms()...');
 
-            app.useLayout("twocolumn").setViews({
-                "#container-nav": new Header.Views.Nav({
+            app.useLayout('twocolumn').setViews({
+                '#container-nav': new Header.Views.Nav({
                     model: this.session,
                     alerts: this.alerts
                 }),
-                "#container-alert": new Alert.Views.List({
+                '#container-alert': new Alert.Views.List({
                     collection: this.alerts
                 }),
-                "#container-menu": new About.Views.Menu(),
-                "#container-content": new About.Views.Terms(),
-                "#container-footer": new Meta.Views.Footer()
+                '#container-menu': new About.Views.Menu(),
+                '#container-content': new About.Views.Terms(),
+                '#container-footer': new Meta.Views.Footer()
             }).render();
         },
 
         privacy: function() {
-            debug.info("Entering About.Router.privacy()...");
+            debug.info('Entering About.Router.privacy()...');
 
-            app.useLayout("twocolumn").setViews({
-                "#container-nav": new Header.Views.Nav({
+            app.useLayout('twocolumn').setViews({
+                '#container-nav': new Header.Views.Nav({
                     model: this.session,
                     alerts: this.alerts
                 }),
-                "#container-alert": new Alert.Views.List({
+                '#container-alert': new Alert.Views.List({
                     collection: this.alerts
                 }),
-                "#container-menu": new About.Views.Menu(),
-                "#container-content": new About.Views.Privacy(),
-                "#container-footer": new Meta.Views.Footer()
+                '#container-menu': new About.Views.Menu(),
+                '#container-content': new About.Views.Privacy(),
+                '#container-footer': new Meta.Views.Footer()
             }).render();
         }
 
@@ -127,15 +132,15 @@ function(app, Alert, Session, Account, Header, Meta) {
         },
 
         initialize: function() {
-            debug.info("Entering About.Views.Menu.initialize()...");
+            debug.info('Entering About.Views.Menu.initialize()...');
         },
 
         beforeRender: function() {
-            debug.info("Entering About.Views.Menu.beforeRender()...");
+            debug.info('Entering About.Views.Menu.beforeRender()...');
         },
 
         serialize: function() {
-            debug.info("Entering About.Views.Menu.serialize()...");
+            debug.info('Entering About.Views.Menu.serialize()...');
 
             return {
                 menuItems: menuItems,
@@ -145,34 +150,34 @@ function(app, Alert, Session, Account, Header, Meta) {
     });
 
     About.Views.Company = Backbone.View.extend({
-        template: "about/company",
+        template: 'about/company',
 
         initialize: function() {
-            debug.info("Entering About.Views.Company.initialize()...");
+            debug.info('Entering About.Views.Company.initialize()...');
         }
     });
 
     About.Views.Faq = Backbone.View.extend({
-        template: "about/faq",
+        template: 'about/faq',
 
         initialize: function() {
-            debug.info("Entering About.Views.Faq.initialize()...");
+            debug.info('Entering About.Views.Faq.initialize()...');
         }
     });
 
     About.Views.Terms = Backbone.View.extend({
-        template: "about/terms",
+        template: 'about/terms',
 
         initialize: function() {
-            debug.info("Entering About.Views.Terms.initialize()...");
+            debug.info('Entering About.Views.Terms.initialize()...');
         }
     });
 
     About.Views.Privacy = Backbone.View.extend({
-        template: "about/privacy",
+        template: 'about/privacy',
 
         initialize: function() {
-            debug.info("Entering About.Views.Privacy.initialize()...");
+            debug.info('Entering About.Views.Privacy.initialize()...');
         }
     });
 

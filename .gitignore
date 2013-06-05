@@ -1,4 +1,6 @@
-dist/
-node_modules/
-temp/
+node_modules
+dist
+.tmp
+.sass-cache
+app/bower_components
 setenv.sh

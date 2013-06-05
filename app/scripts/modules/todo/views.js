@@ -1,23 +1,25 @@
+/*global define: false */
 define([
-  "app",
+    // Application.
+    'app',
 
-  "underscore",
+    'underscore',
 
-  // Libs
-  "backbone",
+    // Libs
+    'backbone',
 
-  // Modules
-  "modules/todo/constants",
+    // Modules
+    'modules/todo/constants',
 
-  "helpers"
+    'helpers'
 ],
-
 function(app, _, Backbone, Constants) {
+    'use strict';
 
     var Views = {};
 
     Views.Form = Backbone.View.extend({
-        template: "todo/form",
+        template: 'todo/form',
 
         inputId: '#new-todo',
 
@@ -29,7 +31,7 @@ function(app, _, Backbone, Constants) {
         // Callback function that creates new **Todo.Model** model
         // and persists it to *localStorage*.
         createOnEnter: function( e ) {
-            console.log("Entering Views.Form.createOnEnter()...");
+            console.log('Entering Views.Form.createOnEnter()...');
 
             // Do nothing if Enter key pressed or input value is blank.
             if (e.which !== Constants.ENTER_KEY || !this.$(this.inputId).val().trim() ) {
@@ -43,12 +45,12 @@ function(app, _, Backbone, Constants) {
             this.collection.create(this.newAttributes());
 
             // Clear input.
-            this.$(this.inputId).val("");
+            this.$(this.inputId).val('');
         },
 
         // Generate the attributes for a new Todo item.
         newAttributes: function() {
-            console.log("Entering Views.Form.newAttributes()...");
+            console.log('Entering Views.Form.newAttributes()...');
 
             return {
                 title: this.$(this.inputId).val(),
@@ -60,7 +62,7 @@ function(app, _, Backbone, Constants) {
 
     Views.ToggleAll = Backbone.View.extend({
 
-        template: "todo/toggle",
+        template: 'todo/toggle',
 
         inputId: '#toggle-all',
 
@@ -72,7 +74,7 @@ function(app, _, Backbone, Constants) {
         // Callback function that sets each Todo items as
         // complete/incomplete.
         toggleAllComplete: function() {
-            console.log("Entering Views.ToggleAll.toggleAllComplete()...");
+            console.log('Entering Views.ToggleAll.toggleAllComplete()...');
 
             var completed = this.$(this.inputId)[0].checked;
 
@@ -92,17 +94,17 @@ function(app, _, Backbone, Constants) {
         // This view listens for changes to its collection,
         // re-rendering.
         initialize: function() {
-            console.log("Entering Views.List.initialize()...");
+            console.log('Entering Views.List.initialize()...');
 
             // Collection.fetch() will call reset() on success, which
             // in turn will trigger a "reset" event
-            this.collection.on("reset", function() {
+            this.collection.on('reset', function() {
                 this.render();
             }, this);
 
             // When model is added to this collection, insert item
             // view.
-            this.collection.on("add", function(item) {
+            this.collection.on('add', function(item) {
                 this.insertView(new Views.Item({
                     model: item
                 })).render();
@@ -110,17 +112,17 @@ function(app, _, Backbone, Constants) {
 
             // Bind the filterAll callback to this collection to be
             // invoked whenever the filter event is triggered.
-            this.collection.on("filter", function(filterVal) {
+            this.collection.on('filter', function(filterVal) {
                 this.filterAll(filterVal);
             }, this);
         },
 
         beforeRender: function() {
-            console.log("Entering Views.List.beforeRender()...");
+            console.log('Entering Views.List.beforeRender()...');
 
             // Insert each item view before render.
             this.collection.each(function(item) {
-                console.log("Insert view for item in collection");
+                console.log('Insert view for item in collection');
                 this.insertView(new Views.Item({
                     model: item
                 }));
@@ -130,26 +132,26 @@ function(app, _, Backbone, Constants) {
         // Callback function that hides/unhides this collection's
         // items.
         filterAll : function (filterVal) {
-            console.log("Entering Views.List.filterAll()...");
+            console.log('Entering Views.List.filterAll()...');
 
             this.collection.each(function( item ) {
                 // Trigger a visible event by this item.
-                item.trigger("visible", filterVal);
+                item.trigger('visible', filterVal);
             });
         }
     });
 
     // The view that comprises the DOM element for a todo item.
     Views.Item = Backbone.View.extend({
-        template: "todo/item",
+        template: 'todo/item',
 
-        tagName: "li",
+        tagName: 'li',
 
         inputClass: '.edit',
 
         // Delegated events specific to an item.
         events: {
-            "click .toggle":    "toggleCompleted",
+            'click .toggle':    'toggleCompleted',
             'dblclick label':   'edit',
             'click .destroy':   'clear',
             'keypress .edit':   'updateOnEnter',
@@ -161,22 +163,22 @@ function(app, _, Backbone, Constants) {
         // is destroyed. It hides/unhides itself when its model
         // triggers a visible event.
         initialize: function() {
-            console.log("Entering Views.Item.initialize()...");
+            console.log('Entering Views.Item.initialize()...');
 
             // Re-render this view after todo is editted.
-            this.model.on("change", function() {
+            this.model.on('change', function() {
                 this.render();
             }, this);
 
             // Removes this view from the DOM, and calls stopListening
             // to remove any bound events that the view has listenTo'd.
-            this.model.on("destroy", function() {
+            this.model.on('destroy', function() {
                 this.remove();
             }, this);
 
             // Binds the toggleVisible callback function to this
             // model's visible event.
-            this.model.on("visible", function(filterVal) {
+            this.model.on('visible', function(filterVal) {
                 this.toggleVisible(filterVal);
             }, this);
         },
@@ -188,7 +190,7 @@ function(app, _, Backbone, Constants) {
         // rendered.
         // Sets the DOM element class to completed if the todo item is complete.
         beforeRender: function() {
-            console.log("Entering Views.Item.beforeRender()...");
+            console.log('Entering Views.Item.beforeRender()...');
 
             // Toggles the todo item as complete/incomplete.
             this.$el.toggleClass( 'completed', this.model.get('completed') );
@@ -199,18 +201,18 @@ function(app, _, Backbone, Constants) {
 
         // Provides the template with the model data to render.
         serialize: function() {
-            console.log("Entering Views.Item.serialize()...");
+            console.log('Entering Views.Item.serialize()...');
 
             return {
-                completed: this.model.get("completed"),
-                title: this.model.get("title")
+                completed: this.model.get('completed'),
+                title: this.model.get('title')
             };
         },
 
         // The callback function that toggles the todo item as visible
         // /hidden.
         toggleVisible : function (filterVal) {
-            console.log("Entering Views.Item.toggleVisible()...");
+            console.log('Entering Views.Item.toggleVisible()...');
 
             this.$el.toggleClass( 'hidden',  this.isHidden(filterVal));
         },
@@ -218,7 +220,7 @@ function(app, _, Backbone, Constants) {
         // Returns `false` if the todo item is visible and true if the
         // todo item is hidden.
         isHidden : function (filterVal) {
-            console.log("Entering Views.Item.isHidden()...");
+            console.log('Entering Views.Item.isHidden()...');
 
             var isCompleted = this.model.get('completed');
             return ( // hidden cases only
@@ -230,7 +232,7 @@ function(app, _, Backbone, Constants) {
         // The callback function that toggles the `"completed"` state
         // of the model.
         toggleCompleted: function() {
-            console.log("Entering Views.Todo.toggleCompleted()...");
+            console.log('Entering Views.Todo.toggleCompleted()...');
 
             this.model.toggle();
         },
@@ -238,7 +240,7 @@ function(app, _, Backbone, Constants) {
         // Callback function that switches this todo item into
         // `"editing"` mode, displaying the input field.
         edit: function() {
-            console.log("Entering Views.Item.edit()...");
+            console.log('Entering Views.Item.edit()...');
 
             this.$el.addClass('editing');
             this.$(this.inputClass).focus();
@@ -247,7 +249,7 @@ function(app, _, Backbone, Constants) {
         // Callback function that closes the `"editing"` mode, saving
         // changes to the todo item.
         close: function() {
-            console.log("Entering Views.Todo.close()...");
+            console.log('Entering Views.Todo.close()...');
 
             var value = this.$(this.inputClass).val().trim();
 
@@ -264,7 +266,7 @@ function(app, _, Backbone, Constants) {
         // the close function when the `enter` key is hit, signifying
         // that the user is done editing the todo.
         updateOnEnter: function( e ) {
-            console.log("Entering Views.Item.updateOnEnter()...");
+            console.log('Entering Views.Item.updateOnEnter()...');
 
             if ( e.keyCode === Constants.ENTER_KEY ) {
                 this.close();
@@ -274,7 +276,7 @@ function(app, _, Backbone, Constants) {
         // The callback function that removes the todo item,
         // destroying the model.
         clear: function() {
-            console.log("Entering Views.Item.clear()...");
+            console.log('Entering Views.Item.clear()...');
 
             this.model.clear();
         }
@@ -283,7 +285,7 @@ function(app, _, Backbone, Constants) {
     // The view that comprises the DOM elements for the stats of a
     // todo list.
     Views.Stats = Backbone.View.extend({
-        template: "todo/stats",
+        template: 'todo/stats',
 
         // Delegated event for clearing completed todo items.
         events: {
@@ -293,7 +295,7 @@ function(app, _, Backbone, Constants) {
         // This view listens to changes to its collection,
         // re-rendering when any event is triggered.
         initialize: function() {
-            console.log("Entering Views.Stats.initialize()...");
+            console.log('Entering Views.Stats.initialize()...');
 
             // Refresh the statistics when this collection changes
             this.collection.bind( 'all', this.render, this );
@@ -301,7 +303,7 @@ function(app, _, Backbone, Constants) {
 
         // Provides the view with this collection's data.
         serialize: function() {
-            console.log("Entering Views.Stats.serialize()...");
+            console.log('Entering Views.Stats.serialize()...');
 
             var completed = this.collection.completed().length;
             var remaining = this.collection.remaining().length;
@@ -323,7 +325,7 @@ function(app, _, Backbone, Constants) {
         // The callback function that clears all completed todo items,
         // destroying their models.
         clearCompleted: function() {
-            console.log("Entering Views.Form.clearCompleted()...");
+            console.log('Entering Views.Form.clearCompleted()...');
 
             // Iterates over a list of completed items in this
             // collection, yielding each in turn to an iterator

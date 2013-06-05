@@ -1,18 +1,21 @@
+/*global define: false */
 define([
     // Application.
-    "app",
+    'app',
 
-    // Libs
-    "backbone",
+    // Libraries.
+    'backbone',
+    'debug',
 
     // Modules.
-    "modules/session",
-    "modules/alert",
+    'modules/session',
+    'modules/alert',
     'modules/header',
     'modules/meta'
 ],
 
-function(app, Backbone, Session, Alert, Header, Meta) {
+function(app, Backbone, debug, Session, Alert, Header, Meta) {
+    'use strict';
 
     var Thing = app.module();
 
@@ -22,11 +25,11 @@ function(app, Backbone, Session, Alert, Header, Meta) {
     Thing.Router = Backbone.SubRoute.extend({
 
         routes: {
-            "list": "list"             // #accounts/list
+            'list': 'list'             // #accounts/list
         },
 
         initialize: function(options) {
-            debug.info("Entering Thing.Router.initialize()...");
+            debug.info('Entering Thing.Router.initialize()...');
 
             this.session = options.session;
             this.account = options.account;
@@ -34,36 +37,36 @@ function(app, Backbone, Session, Alert, Header, Meta) {
         },
 
         before: function( route ) {
-            debug.info("Entering Thing.Router.before(" + route + ")...");
+            debug.info('Entering Thing.Router.before(' + route + ')...');
         },
 
         list: function() {
-            debug.info("Entering Thing.Router.profile()...");
+            debug.info('Entering Thing.Router.profile()...');
 
             // Set layout and views, then render.
-            app.useLayout("onecolumn").setViews({
-                "#container-nav": new Header.Views.Nav({
+            app.useLayout('onecolumn').setViews({
+                '#container-nav': new Header.Views.Nav({
                     model: this.session,
                     alerts: this.alerts
                 }),
-                "#container-alert": new Alert.Views.List({
+                '#container-alert': new Alert.Views.List({
                     collection: this.alerts
                 }),
-                "#container-content": new Thing.Views.List(),
-                "#container-footer": new Meta.Views.Footer()
+                '#container-content': new Thing.Views.List(),
+                '#container-footer': new Meta.Views.Footer()
             }).render();
         }
     });
 
     Thing.Views.List = Backbone.View.extend({
-        template: "thing/list",
+        template: 'thing/list',
 
         initialize: function() {
-            debug.info("Entering Thing.Views.List.initialize()...");
+            debug.info('Entering Thing.Views.List.initialize()...');
         }
     });
 
-  // Required, return the module for AMD compliance.
-  return Thing;
+    // Required, return the module for AMD compliance.
+    return Thing;
 
 });

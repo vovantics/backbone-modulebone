@@ -1,22 +1,24 @@
+/*global define: false */
 define([
     // Libraries.
-    "jed",
-    "handlebars",
+    'jed',
+    'handlebars',
+    'debug',
 
     // Modules
-    "i18n!modules/nls/locale_data"
+    'i18n!modules/nls/locale_data'
 ],
-
-function(Jed, Handlebars, locale_data) {
+function(Jed, Handlebars, debug, localeData) {
+    'use strict';
 
     var i18n = new Jed({
         // Generally output by a .po file conversion
-        locale_data : locale_data,
-        "domain" : "messages"
+        localeData : localeData,
+        'domain' : 'messages'
     });
 
     Handlebars.registerHelper('_', function(key) {
-        debug.info("Entering nls/_()...");
+        debug.info('Entering nls/_()...');
         return i18n.gettext(key);
     });
 

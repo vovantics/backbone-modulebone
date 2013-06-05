@@ -1,26 +1,21 @@
+/*global define: false, Store: false */
 define([
-    "app",
+    // Application.
+    'app',
 
-    // Libs
-    "backbone",
+    // Libraries.
+    'backbone',
 
-    // Constants
-    "modules/todo/constants",
-
-    // Views
-    "modules/todo/views",
-
-    // Modules
-    'modules/session',
-    'modules/header',
-    'modules/alert',
+    // Modules.
+    'modules/todo/constants',
+    'modules/todo/views',
 
     // Plugins
     //"vendor/backbone/backbone-localstorage"
     'backbone.localstorage'
 ],
-
-function(app, Backbone, Constants, Views, Session, Header, Alert) {
+function(app, Backbone, Constants, Views) {
+    'use strict';
 
     // Create a new module
     var Todo = app.module();
@@ -31,12 +26,12 @@ function(app, Backbone, Constants, Views, Session, Header, Alert) {
     Todo.Router = Backbone.SubRoute.extend({
 
         routes: {
-            "": "index",
+            '': 'index',
             '*filter': 'setFilter'
         },
 
         initialize: function() {
-            console.log("Entering Todo.Router.initialize()...");
+            console.log('Entering Todo.Router.initialize()...');
 
             // Create a new Todo List.
             this.list = new Todo.List({ namespace: 'todos' });
@@ -48,28 +43,28 @@ function(app, Backbone, Constants, Views, Session, Header, Alert) {
         },
 
         before: function( route ) {
-            console.log("Entering Todo.Router.before(" + route + ")...");
+            console.log('Entering Todo.Router.before(' + route + ')...');
 
             // Use the todo layout and set views.
-            app.useLayout("todo").setViews({
+            app.useLayout('todo').setViews({
 
                 // Attach the form View to #container-form element.
-                "#container-form": new Todo.Views.Form({
+                '#container-form': new Todo.Views.Form({
                     collection: this.list
                 }),
 
                 // Attach the toggle View to #container-toggle element.
-                "#container-toggle": new Todo.Views.ToggleAll({
+                '#container-toggle': new Todo.Views.ToggleAll({
                     collection: this.list
                 }),
 
                 // Attach the list View to #container-list element.
-                "#container-list": new Todo.Views.List({
+                '#container-list': new Todo.Views.List({
                     collection: this.list
                 }),
 
                 // Attach the stats View to #container-stats.
-                "#container-stats": new Todo.Views.Stats({
+                '#container-stats': new Todo.Views.Stats({
                     collection: this.list
                 })
 
@@ -77,15 +72,15 @@ function(app, Backbone, Constants, Views, Session, Header, Alert) {
         },
 
         index: function() {
-            console.log("Entering Todo.Router.index()...");
+            console.log('Entering Todo.Router.index()...');
         },
 
         setFilter: function( param ) {
-            console.log("Entering Todo.Router.setFilter()...");
+            console.log('Entering Todo.Router.setFilter()...');
             console.log(param);
 
             // Set the current filter to be used
-            filterVal = param.trim() || '';
+            var filterVal = param.trim() || '';
 
             // Trigger a filter event by this collection.
             this.list.trigger('filter', filterVal);
@@ -135,7 +130,7 @@ function(app, Backbone, Constants, Views, Session, Header, Alert) {
 
         // Filter down the list of all todo items that are finished.
         completed: function() {
-            console.log("Entering Todo.List.completed()...");
+            console.log('Entering Todo.List.completed()...');
             return this.filter(function( todo ) {
                 return todo.get('completed');
             });
@@ -143,7 +138,7 @@ function(app, Backbone, Constants, Views, Session, Header, Alert) {
 
         // Filter down the list to only todo items that are still not finished.
         remaining: function() {
-            console.log("Entering Todo.List.remaining()...");
+            console.log('Entering Todo.List.remaining()...');
             return this.without.apply( this, this.completed() );
         },
 

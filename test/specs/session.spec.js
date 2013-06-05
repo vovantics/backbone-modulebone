@@ -1,10 +1,17 @@
+/*global define:false, describe: false, before:false, after: false, beforeEach: false, afterEach: false, it:false, expect: false */
 define([
-    // Modules
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+
+    // Modules.
     'modules/session',
     'modules/alert',
     'modules/header'
 ],
-function(Session, Alert, Header) {
+function($, _, Backbone, Session, Alert, Header) {
+    'use strict';
 
     describe('Session Module', function() {
 
@@ -14,10 +21,10 @@ function(Session, Alert, Header) {
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering Session Module / Logging in before()...");
+                console.log('[TEST] Entering Session Module / Logging in before()...');
 
                 // Instantiate layout.
-                layout = new Backbone.Layout();
+                var layout = new Backbone.Layout();
 
                 // Instantiate views and insert them into layout.
                 var session = new Session.Model();
@@ -38,7 +45,7 @@ function(Session, Alert, Header) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -46,11 +53,11 @@ function(Session, Alert, Header) {
 
                 });
 
-                //console.log($("body"));
+                //console.log($('body'));
             });
 
             after(function(done) {
-                console.log("[TEST] Entering Session Module / Logging in after()...");
+                console.log('[TEST] Entering Session Module / Logging in after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();
@@ -59,13 +66,13 @@ function(Session, Alert, Header) {
             });
 
             beforeEach(function(done) {
-                console.log("[TEST] Entering Session Module / Logging in beforeEach()...");
+                console.log('[TEST] Entering Session Module / Logging in beforeEach()...');
 
                 done();
             });
 
             afterEach(function(done) {
-                console.log("[TEST] Entering Session Module / Logging in afterEach()...");
+                console.log('[TEST] Entering Session Module / Logging in afterEach()...');
 
                 done();
             });
@@ -115,13 +122,13 @@ function(Session, Alert, Header) {
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering Session Module / Logging out before()...");
+                console.log('[TEST] Entering Session Module / Logging out before()...');
 
                 // Instantiate layout.
                 var layout = new Backbone.Layout();
 
                 // Instantiate views and insert them into layout.
-                var session = new Session.Model({"id":8,"username":"test","auth":true});   // TODO
+                var session = new Session.Model({'id':8,'username':'test','auth':true});   // TODO
                 var alerts = new Alert.Collection();
                 var navView = new Header.Views.Nav({
                     model: session,
@@ -139,7 +146,7 @@ function(Session, Alert, Header) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -147,11 +154,11 @@ function(Session, Alert, Header) {
 
                 });
 
-                console.log($("body"));
+                console.log($('body'));
             });
 
             after(function(done) {
-                console.log("[TEST] Entering Session Module / Logging out after()...");
+                console.log('[TEST] Entering Session Module / Logging out after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();
@@ -160,12 +167,12 @@ function(Session, Alert, Header) {
             });
 
             beforeEach(function(done) {
-                console.log("[TEST] Entering Session Module / Logging out beforeEach()...");
+                console.log('[TEST] Entering Session Module / Logging out beforeEach()...');
                 done();
             });
 
             afterEach(function(done) {
-                console.log("[TEST] Entering Session Module / Logging out afterEach()...");
+                console.log('[TEST] Entering Session Module / Logging out afterEach()...');
                 done();
             });
 

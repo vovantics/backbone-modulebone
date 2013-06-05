@@ -1,25 +1,29 @@
+/*global define: false */
 define([
     // Application.
-    "app",
+    'app',
 
     // Libs
-    "backbone",
+    'jquery',
+    'underscore',
+    'backbone',
+    'debug',
 
     // Views
-    "modules/account/views",
+    'modules/account/views',
 
     // Modules
     'modules/base',
-    "modules/session",
-    "modules/alert",
+    'modules/session',
+    'modules/alert',
     'modules/header',
     'modules/meta'
 
     // Plugins
     //"vendor/backbone.subroute"
 ],
-
-function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
+function(app, $, _, Backbone, debug, Views, Base, Session, Alert, Header, Meta) {
+    'use strict';
 
     var Account = app.module();
 
@@ -29,21 +33,21 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
     Account.Router = Backbone.SubRoute.extend({
 
         routes: {
-            "edit": "edit",             // #accounts/edit
-            "join": "join",             // #accounts/join
-            "register": "register",             // #accounts/register
-            "settings": "settings",             // #accounts/settings
-            "deactivate/request": "deactivate", // #accounts/deactivate/request
+            'edit': 'edit',             // #accounts/edit
+            'join': 'join',             // #accounts/join
+            'register': 'register',             // #accounts/register
+            'settings': 'settings',             // #accounts/settings
+            'deactivate/request': 'deactivate', // #accounts/deactivate/request
             'password/change': 'passwordChange',    // #accounts/password/change
             'password/reset': 'passwordReset',  // #accounts/password/reset
             'password/reset/done': 'passwordResetDone',    // #accounts/password/reset/done
             'password/reset/confirm/:email/:activation_key': 'passwordResetConfirm',    // #accounts/password/reset/confirm/<email>/<activation_key>
             'reactivate/:email/:activation_key': 'reactivate',    // #accounts/reactivate/<email>/<activation_key>
-            ":username": "profile"      // #accounts/<username>
+            ':username': 'profile'      // #accounts/<username>
         },
 
         initialize: function(options) {
-            debug.info("Entering Account.Router.initialize()...");
+            debug.info('Entering Account.Router.initialize()...');
 
             this.session = options.session;
             this.account = options.account;
@@ -52,87 +56,87 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
         },
 
         before: function( route ) {
-            debug.info("Entering Account.Router.before(" + route + ")...");
+            debug.info('Entering Account.Router.before(' + route + ')...');
         },
 
         profile: function(username) {
             app.router.loginRequired(function() {
-                debug.info("Entering Account.Router.profile(" + username + ")...");
+                debug.info('Entering Account.Router.profile(' + username + ')...');
 
                 // Set layout and views, then render.
-                app.useLayout("onecolumn").setViews({
-                    "#container-nav": new Header.Views.Nav({
+                app.useLayout('onecolumn').setViews({
+                    '#container-nav': new Header.Views.Nav({
                         model: this.session,
                         alerts: this.alerts
                     }),
-                    "#container-alert": new Alert.Views.List({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-content": new Account.Views.Profile({
+                    '#container-content': new Account.Views.Profile({
                         model: this.account
                     }),
-                    "#container-footer": new Meta.Views.Footer()
+                    '#container-footer': new Meta.Views.Footer()
                 }).render();
             });
         },
 
         deactivate: function() {
             app.router.loginRequired(function() {
-                debug.info("Entering Account.Router.edit()...");
+                debug.info('Entering Account.Router.edit()...');
 
                 // Set layout and views, then render.
-                app.useLayout("twocolumn").setViews({
-                    "#container-nav": new Header.Views.Nav({
+                app.useLayout('twocolumn').setViews({
+                    '#container-nav': new Header.Views.Nav({
                         model: this.session,
                         alerts: this.alerts
                     }),
-                    "#container-alert": new Alert.Views.List({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-menu": new Account.Views.Menu(),
-                    "#container-content": new Account.Views.Deactivate({
+                    '#container-menu': new Account.Views.Menu(),
+                    '#container-content': new Account.Views.Deactivate({
                         model: this.account,
                         session: this.session,
                         alerts: this.alerts
                     }),
-                    "#container-footer": new Meta.Views.Footer()
+                    '#container-footer': new Meta.Views.Footer()
                 }).render();
             });
         },
 
         edit: function() {
             app.router.loginRequired(function() {
-                debug.info("Entering Account.Router.edit()...");
+                debug.info('Entering Account.Router.edit()...');
 
                 // Set layout and views, then render.
-                app.useLayout("twocolumn").setViews({
-                    "#container-nav": new Header.Views.Nav({
+                app.useLayout('twocolumn').setViews({
+                    '#container-nav': new Header.Views.Nav({
                         model: this.session,
                         alerts: this.alerts
                     }),
-                    "#container-alert": new Alert.Views.List({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-menu": new Account.Views.Menu(),
-                    "#container-content": new Account.Views.Edit({
+                    '#container-menu': new Account.Views.Menu(),
+                    '#container-content': new Account.Views.Edit({
                         model: this.account,
                         alerts: this.alerts
                     }),
-                    "#container-footer": new Meta.Views.Footer()
+                    '#container-footer': new Meta.Views.Footer()
                 }).render();
             });
         },
 
         join: function() {
             app.router.anonymousRequired(function() {
-                debug.info("Entering Account.Router.join()...");
+                debug.info('Entering Account.Router.join()...');
 
                 // Set layout and views, then render.
-                app.useLayout("splash").setViews({
-                    "#container-alert": new Alert.Views.List({
+                app.useLayout('splash').setViews({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-content": new Account.Views.Join({
+                    '#container-content': new Account.Views.Join({
                         model: this.account,
                         session: this.session,
                         alerts: this.alerts
@@ -143,14 +147,14 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
 
         register: function() {
             app.router.anonymousRequired(function() {
-                debug.info("Entering Account.Router.register()...");
+                debug.info('Entering Account.Router.register()...');
 
                 // Set layout and views, then render.
-                app.useLayout("splash").setViews({
-                    "#container-alert": new Alert.Views.List({
+                app.useLayout('splash').setViews({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-content": new Account.Views.Register({
+                    '#container-content': new Account.Views.Register({
                         model: this.account,
                         session: this.session,
                         alerts: this.alerts
@@ -161,114 +165,114 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
 
         passwordChange: function() {
             app.router.loginRequired(function() {
-                debug.info("Entering Account.Router.passwordChange()...");
+                debug.info('Entering Account.Router.passwordChange()...');
 
                 // Set layout and views, then render.
-                app.useLayout("twocolumn").setViews({
-                    "#container-nav": new Header.Views.Nav({
+                app.useLayout('twocolumn').setViews({
+                    '#container-nav': new Header.Views.Nav({
                         model: this.session,
                         alerts: this.alerts
                     }),
-                    "#container-alert": new Alert.Views.List({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-menu": new Account.Views.Menu(),
-                    "#container-content": new Account.Views.PasswordChange({
+                    '#container-menu': new Account.Views.Menu(),
+                    '#container-content': new Account.Views.PasswordChange({
                         model: this.account,
                         alerts: this.alerts
                     }),
-                    "#container-footer": new Meta.Views.Footer()
+                    '#container-footer': new Meta.Views.Footer()
                 }).render();
             });
         },
 
         passwordReset: function() {
             app.router.anonymousRequired(function() {
-                debug.info("Entering Account.Router.passwordReset()...");
+                debug.info('Entering Account.Router.passwordReset()...');
 
                 // The passwordActivationKey model is used to initiate
                 // a password reset.
                 var passwordActivationKey = new Account.PasswordActivationKey();
 
                 // Set layout and views, then render.
-                app.useLayout("onecolumn").setViews({
-                    "#container-nav": new Header.Views.Nav({
+                app.useLayout('onecolumn').setViews({
+                    '#container-nav': new Header.Views.Nav({
                         model: this.session,
                         alerts: this.alerts
                     }),
-                    "#container-alert": new Alert.Views.List({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-content": new Account.Views.PasswordReset({
+                    '#container-content': new Account.Views.PasswordReset({
                         model: passwordActivationKey,
                         alerts: this.alerts
                     }),
-                    "#container-footer": new Meta.Views.Footer()
+                    '#container-footer': new Meta.Views.Footer()
                 }).render();
             });
         },
 
         passwordResetDone: function() {
             app.router.anonymousRequired(function() {
-                debug.info("Entering Account.Router.passwordResetDone()...");
+                debug.info('Entering Account.Router.passwordResetDone()...');
 
                 // Set layout and views, then render.
-                app.useLayout("onecolumn").setViews({
-                    "#container-nav": new Header.Views.Nav({
+                app.useLayout('onecolumn').setViews({
+                    '#container-nav': new Header.Views.Nav({
                         model: this.session,
                         alerts: this.alerts
                     }),
-                    "#container-alert": new Alert.Views.List({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-content": new Account.Views.PasswordResetDone(),
-                    "#container-footer": new Meta.Views.Footer()
+                    '#container-content': new Account.Views.PasswordResetDone(),
+                    '#container-footer': new Meta.Views.Footer()
                 }).render();
             });
         },
 
-        passwordResetConfirm: function(email, activation_key) {
-            debug.info("Entering Account.Router.passwordResetConfirm()...");
+        passwordResetConfirm: function(email, activationKey) {
+            debug.info('Entering Account.Router.passwordResetConfirm()...');
 
             // Fetch the account model, given the email & activation key.
             this.account.clear();
-            this.account.set( { email: email, activation_key : activation_key } );
+            this.account.set( { email: email, activationKey : activationKey } );
             var that = this;
             this.account.fetch({
                 async: false,
                 success: function (model, response, options) {
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         // Display alerts.
                         _.each(response.data, function(message) {
                             that.alerts.add(new Alert.Model({msg: message, level: 'error'}));
                         });
                     }
-                    else if (response.status == 'error') {
+                    else if (response.status === 'error') {
                         that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                     }
                     else {
-                        debug.debug("Got the account to password reset, given email=[" + email + "] activation_key=[" + activation_key + "]!");
+                        debug.debug('Got the account to password reset, given email=[' + email + '] activationKey=[' + activationKey + ']!');
                     }
                 },
                 alerts: that.alerts
             });
 
             // Set layout and views, then render.
-            var layout = app.useLayout("onecolumn");
+            var layout = app.useLayout('onecolumn');
             layout.setViews({
-                "#container-nav": new Header.Views.Nav({
+                '#container-nav': new Header.Views.Nav({
                     model: this.session,
                     alerts: this.alerts
                 }),
-                "#container-alert": new Alert.Views.List({
+                '#container-alert': new Alert.Views.List({
                     collection: this.alerts
                 }),
-                "#container-footer": new Meta.Views.Footer()
+                '#container-footer': new Meta.Views.Footer()
             });
             // Only display password change view if account exists.
             if (this.account.id) {
                 layout.setViews({
-                    "#container-content": new Account.Views.PasswordChange({
+                    '#container-content': new Account.Views.PasswordChange({
                         model: this.account,
                         alerts: this.alerts
                     })
@@ -277,26 +281,26 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
             layout.render();
         },
 
-        reactivate: function(email, activation_key) {
-            debug.info("Entering Account.Router.reactivate()...");
+        reactivate: function(email, activationKey) {
+            debug.info('Entering Account.Router.reactivate()...');
 
             // Fetch the account model, given the email & activation key.
-            this.account.set( { email: email, activation_key : activation_key } );
+            this.account.set( { email: email, activationKey : activationKey } );
             var that = this;
             this.account.fetch({
                 async: false,
                 success: function (model, response, options) {
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         // Display alerts.
                         _.each(response.data, function(message) {
                             that.alerts.add(new Alert.Model({msg: message, level: 'error'}));
                         });
                     }
-                    else if (response.status == 'error') {
+                    else if (response.status === 'error') {
                         that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                     }
                     else {
-                        debug.debug("Got the account to activate, given email=[" + email + "] activation_key=[" + activation_key + "]!");
+                        debug.debug('Got the account to activate, given email=[" + email + "] activationKey=[" + activationKey + "]!');
                     }
                 },
                 alerts: that.alerts
@@ -310,13 +314,13 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
                 this.account.save({ status: 'active' },
                 {
                     success: function(model, response, options){
-                        if (response.status == 'fail') {
+                        if (response.status === 'fail') {
                             // Display alerts.
                             _.each(response.data, function(message) {
                                 thy.alerts.add(new Alert.Model({msg: message, level: 'error'}));
                             });
                         }
-                        else if (response.status == 'error') {
+                        else if (response.status === 'error') {
                             thy.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                         }
                         else {
@@ -331,24 +335,24 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
 
         settings: function() {
             app.router.loginRequired(function() {
-                debug.info("Entering Account.Router.settings()...");
+                debug.info('Entering Account.Router.settings()...');
 
                 // Set layout and views, then render.
-                app.useLayout("twocolumn").setViews({
-                    "#container-nav": new Header.Views.Nav({
+                app.useLayout('twocolumn').setViews({
+                    '#container-nav': new Header.Views.Nav({
                         model: this.session,
                         alerts: this.alerts
                     }),
-                    "#container-alert": new Alert.Views.List({
+                    '#container-alert': new Alert.Views.List({
                         collection: this.alerts
                     }),
-                    "#container-menu": new Account.Views.Menu(),
-                    "#container-content": new Account.Views.Settings({
+                    '#container-menu': new Account.Views.Menu(),
+                    '#container-content': new Account.Views.Settings({
                         model: this.account,
                         alerts: this.alerts,
                         language: this.language
                     }),
-                    "#container-footer": new Meta.Views.Footer()
+                    '#container-footer': new Meta.Views.Footer()
                 }).render();
             });
         }
@@ -363,7 +367,7 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
         urlRoot: 'http://' + app.serverHost + '/users/password/reset/',
 
         initialize: function() {
-            debug.info("Entering Account.PasswordActivationKey.initialize()...");
+            debug.info('Entering Account.PasswordActivationKey.initialize()...');
         }
 
     });
@@ -377,7 +381,7 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
         urlRoot: 'http://' + app.serverHost + '/users/',
 
         initialize: function() {
-            debug.info("Entering Account.Model.initialize()...");
+            debug.info('Entering Account.Model.initialize()...');
 
             Base.Model.prototype.initialize.call(this);
         },
@@ -386,44 +390,44 @@ function(app, Backbone, Views, Base, Session, Alert, Header, Meta) {
         // is returned by the server, in fetch, and save. Returns the
         // attributes hash to be set on the model
         parse: function(response) {
-            debug.info("Entering Account.Model.parse()...");
+            debug.info('Entering Account.Model.parse()...');
 
-            if (response.status == 'success') {
-                debug.debug("Account model response success [" + JSON.stringify(response) + "]");
+            if (response.status === 'success') {
+                debug.debug('Account model response success [" + JSON.stringify(response) + "]');
                 return response.data;
             }
             else {
-                debug.debug("Account model response error/fail [" + JSON.stringify(response) + "]");
+                debug.debug('Account model response error/fail [" + JSON.stringify(response) + "]');
                 return false;
             }
         },
 
-        // Use id or (email and activation_key) to get/update an
+        // Use id or (email and activationKey) to get/update an
         // account.
         sync: function (method, model, options) {
-            debug.info("Entering Account.Model.sync()...");
+            debug.info('Entering Account.Model.sync()...');
 
             options = options || {};
 
             // Passing options.url will override the default
             // construction of the url in Backbone.sync
-            if (method == "read") {
-                if (model.get("email") && model.get("activation_key")) {
-                    options.url = model.urlRoot + model.get("email") + '/' + model.get("activation_key") + '/';
+            if (method === 'read') {
+                if (model.get('email') && model.get('activationKey')) {
+                    options.url = model.urlRoot + model.get('email') + '/' + model.get('activationKey') + '/';
                 }
                 else {
-                    options.url = model.urlRoot + model.get("id") + '/';
+                    options.url = model.urlRoot + model.get('id') + '/';
                 }
             }
-            else if (method == "update") {
-                if (model.get("email") && model.get("activation_key") && model.get("password")) {
-                    options.url = model.urlRoot + 'password/' + model.get("email") + '/' + model.get("activation_key") + '/';
+            else if (method === 'update') {
+                if (model.get('email') && model.get('activationKey') && model.get('password')) {
+                    options.url = model.urlRoot + 'password/' + model.get('email') + '/' + model.get('activationKey') + '/';
                 }
-                else if (model.get("email") && model.get("activation_key") && model.get("status")) {
-                    options.url = model.urlRoot + 'activate/' + model.get("email") + '/' + model.get("activation_key") + '/';
+                else if (model.get('email') && model.get('activationKey') && model.get('status')) {
+                    options.url = model.urlRoot + 'activate/' + model.get('email') + '/' + model.get('activationKey') + '/';
                 }
                 else {
-                    options.url = model.urlRoot + model.get("id") + '/';
+                    options.url = model.urlRoot + model.get('id') + '/';
                 }
             }
 

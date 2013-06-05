@@ -1,11 +1,21 @@
 {
-  "name": "sandbox",
+  "name": "backbone-modulebone",
   "version": "0.0.0",
-  "dependencies": {
-    "sass-bootstrap": "~2.3.0",
-    "requirejs": "~2.1.4",
-    "modernizr": "~2.6.2",
-    "jquery": "~1.9.1"
-  },
-  "devDependencies": {}
+  "devDependencies": {
+    "backbone": "~1.0.0",
+    "backbone.routefilter": "latest",
+    "backbone.subroute": "~0.3.2",
+    "bootstrap": "~2.3.2",
+    "handlebars": "~1.0.0-rc.4",
+    "handlebars-helpers": "~1.0.0",
+    "jed": "~0.5.4",
+    "jquery.validation": "~1.11.1",
+    "layoutmanager": "~0.8.8",
+    "lodash": "~1.2.1",
+    "moment": "~2.0.0",
+    "requirejs": "~2.1.6",
+    "requirejs-i18n": "~2.0.2",
+    "requirejs-text": "~2.0.6",
+    "sass-bootstrap": "~2.3.2"
+  }
 }

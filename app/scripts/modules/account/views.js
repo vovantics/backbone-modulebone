@@ -1,3 +1,4 @@
+/*global define: false */
 define([
     "app",
 
@@ -16,8 +17,8 @@ define([
 
     'jquery.validate'
 ],
-
 function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/) {
+    'use strict';
 
     var Views = {};
 

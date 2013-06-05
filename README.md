@@ -96,19 +96,9 @@ Responsive templates are styled using Twitter Bootstrap and its JavaScript plugi
 ### Install
 
 1. [Install yeoman](https://github.com/yeoman/yeoman/wiki/Manual-Install)
-1. Install yeoman (bower) packages. This adds them to the `component` and `app/component` directories.
+1. Install bower packages. This adds them to the `app/bower_components` directory.
 
-        $ yeoman install backbone
-        $ yeoman install bootstrap
-        $ yeoman install handlebars
-        $ yeoman install handlebars-helpers
-        $ yeoman install jquery.validation
-        $ yeoman install layoutmanager
-        $ yeoman install yeoman install lodash
-        $ yeoman install moment
-        $ yeoman install yeoman install requirejs
-        $ yeoman install yeoman install requirejs-i18n
-        $ yeoman install yeoman install requirejs-text
+        $ bower install
 
 1. Install grunt plugins. This adds them to `package.json` after installation.
 

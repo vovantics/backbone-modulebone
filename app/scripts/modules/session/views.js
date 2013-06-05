@@ -1,25 +1,29 @@
+/*global define: false */
 define([
-    "app",
+    // Application.
+    'app',
 
-    // Libs
-    "underscore",
-    "backbone",
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+    'debug',
 
     // Modules
-    "modules/alert",
-    "modules/utils",
+    'modules/alert',
+    'modules/utils',
     'modules/macros',
 
     'jquery.validate',
     'bootstrap'
 ],
-
-function(app, _, Backbone, Alert, Utils) {
+function(app, $, _, Backbone, debug, Alert, Utils) {
+    'use strict';
 
     var Views = {};
 
     Views.Login = Backbone.View.extend({
-        template: "session/login",
+        template: 'session/login',
 
         tagName: 'div id="session-login-outer"',
 
@@ -29,14 +33,14 @@ function(app, _, Backbone, Alert, Utils) {
         },
 
         initialize: function(options) {
-            debug.info("Entering Views.Login.initialize()...");
+            debug.info('Entering Views.Login.initialize()...');
 
             this.alerts = this.options.alerts;
             this.next = this.options.next;
         },
 
         serialize: function() {
-            debug.info("Entering Views.Login.serialize()...");
+            debug.info('Entering Views.Login.serialize()...');
 
             var form = {
                 id: 'form-session-login',
@@ -58,9 +62,9 @@ function(app, _, Backbone, Alert, Utils) {
         },
 
         afterRender: function() {
-            debug.info("Entering Views.Login.afterRender()...");
+            debug.info('Entering Views.Login.afterRender()...');
 
-            this.$("#form-session-login").validate({
+            this.$('#form-session-login').validate({
                 highlight: function(element) {
                     $(element).parent('div').parent('div').addClass('error');
                 },
@@ -72,13 +76,13 @@ function(app, _, Backbone, Alert, Utils) {
         },
 
         createOnSubmit: function(e) {
-            debug.info("Entering Views.Login.createOnSubmit()...");
+            debug.info('Entering Views.Login.createOnSubmit()...');
 
             // Cancel default action of the submit event.
             e.preventDefault();
 
             // Set login button state to loading.
-            this.$("#form-session-login button").button('loading');
+            this.$('#form-session-login button').button('loading');
 
             // Create reference to `this` to be used within callbacks.
             var that = this;
@@ -88,18 +92,18 @@ function(app, _, Backbone, Alert, Utils) {
             var arr = this.$('#form-session-login').serializeArray();
             var data = Utils.foldForm(arr);
 
-            debug.debug("Session before save cid=[" + this.model.cid + "] model=[" + JSON.stringify(this.model) + "]");
+            debug.debug('Session before save cid=[" + this.model.cid + "] model=[" + JSON.stringify(this.model) + "]');
             this.model.save(data, {
                 success: function(model, response, options){
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         // Display alerts.
                         _.each(response.data, function(message) {
                             that.alerts.add(new Alert.Model({msg: message, level: 'error'}));
                         });
                     }
                     else {
-                        if (response.data.status == 'inactive') {
-                            debug.debug("User is inactive.");
+                        if (response.data.status === 'inactive') {
+                            debug.debug('User is inactive.');
                             // Clear each form field.
                             _.each(arr, function(field) {
                                 that.$('#' + field.name).val('');
@@ -107,7 +111,7 @@ function(app, _, Backbone, Alert, Utils) {
                             that.alerts.add(new Alert.Model({msg: 'Welcome back! Please check your email for instructions to reactivate this account.', level: 'error'}));
                         }
                         else {
-                            debug.debug("User is active.");
+                            debug.debug('User is active.');
                             if (that.next !== null) {
                                 app.router.navigate(that.next, {trigger: true});
                             }
@@ -121,7 +125,7 @@ function(app, _, Backbone, Alert, Utils) {
             });
 
             // Reset login button state.
-            this.$("#form-session-login button").button('reset');
+            this.$('#form-session-login button').button('reset');
         }
     });
 

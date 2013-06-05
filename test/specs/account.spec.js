@@ -1,10 +1,17 @@
+/*global define:false, describe: false, before:false, after: false, it:false, expect: false */
 define([
-    // Modules
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+
+    // Modules.
     'modules/session',
     'modules/alert',
     'modules/account'
 ],
-function(Session, Alert, Account) {
+function($, _, Backbone, Session, Alert, Account) {
+    'use strict';
 
     describe('Account Module', function() {
 
@@ -14,7 +21,7 @@ function(Session, Alert, Account) {
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering Account Module / Signing up before()...");
+                console.log('[TEST] Entering Account Module / Signing up before()...');
 
                 // Instantiate layout.
                 var layout = new Backbone.Layout();
@@ -40,7 +47,7 @@ function(Session, Alert, Account) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -50,7 +57,7 @@ function(Session, Alert, Account) {
             });
 
             after(function(done) {
-                console.log("[TEST] Entering Account Module / Signing up after()...");
+                console.log('[TEST] Entering Account Module / Signing up after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();
@@ -98,13 +105,13 @@ function(Session, Alert, Account) {
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering Account Module / Updating an account before()...");
+                console.log('[TEST] Entering Account Module / Updating an account before()...');
 
                 // Instantiate layout.
                 var layout = new Backbone.Layout();
 
                 // Instantiate views and insert them into layout.
-                account = new Account.Model({"id":accountId,"email":"test@example.com","username":"test","first_name":"Test","last_name":"Dude","phone":"1234567890","url":"http://www.example.com/test","bio":"Test dude is the crash test dummy.","created_time":"2013-02-20 08:11:11","gender":"male","dob":"1985-01-17"});
+                account = new Account.Model({'id':accountId,'email':'test@example.com','username':'test','first_name':'Test','last_name':'Dude','phone':'1234567890','url':'http://www.example.com/test','bio':'Test dude is the crash test dummy.','created_time':'2013-02-20 08:11:11','gender':'male','dob':'1985-01-17'});
                 var alerts = new Alert.Collection();
                 var alertView = new Alert.Views.List({collection: alerts});
                 var editView = new Account.Views.Edit({
@@ -122,7 +129,7 @@ function(Session, Alert, Account) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -132,7 +139,7 @@ function(Session, Alert, Account) {
             });
 
             after(function(done) {
-                console.log("[TEST] Entering Account Module / Updating an account after()...");
+                console.log('[TEST] Entering Account Module / Updating an account after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();
@@ -201,19 +208,20 @@ function(Session, Alert, Account) {
 
         describe('Deactivating an account', function() {
 
+            var account;
             var accountId = 8;
             var server;
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering Account Module / Deactivating an account before()...");
+                console.log('[TEST] Entering Account Module / Deactivating an account before()...');
 
                 // Instantiate layout.
                 var layout = new Backbone.Layout();
 
                 // Instantiate views and insert them into layout.
-                account = new Account.Model({"id":accountId,"email":"test@example.com","username":"test","first_name":"Test","last_name":"Dude","phone":"1234567890","url":"http://www.example.com/test","bio":"Test dude is the crash test dummy.","created_time":"2013-02-20 08:11:11","gender":"male","dob":"1985-01-17"});
-                var session = new Session.Model({"id":8,"username":"test","auth":true});   // TODO
+                account = new Account.Model({'id':accountId,'email':'test@example.com','username':'test','first_name':'Test','last_name':'Dude','phone':'1234567890','url':'http://www.example.com/test','bio':'Test dude is the crash test dummy.','created_time':'2013-02-20 08:11:11','gender':'male','dob':'1985-01-17'});
+                var session = new Session.Model({'id':8,'username':'test','auth':true});   // TODO
                 var alerts = new Alert.Collection();
                 var alertView = new Alert.Views.List({collection: alerts});
                 var deactivateView = new Account.Views.Deactivate({
@@ -232,7 +240,7 @@ function(Session, Alert, Account) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -242,7 +250,7 @@ function(Session, Alert, Account) {
             });
 
             after(function(done) {
-                console.log("[TEST] Entering Account Module / Deactivating an account after()...");
+                console.log('[TEST] Entering Account Module / Deactivating an account after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();
@@ -271,13 +279,13 @@ function(Session, Alert, Account) {
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering Account Module / Changing a password before()...");
+                console.log('[TEST] Entering Account Module / Changing a password before()...');
 
                 // Instantiate layout.
                 var layout = new Backbone.Layout();
 
                 // Instantiate views and insert them into layout.
-                account = new Account.Model({"id":accountId,"email":"test@example.com","username":"test","first_name":"Test","last_name":"Dude","phone":"1234567890","url":"http://www.example.com/test","bio":"Test dude is the crash test dummy.","created_time":"2013-02-20 08:11:11","gender":"male","dob":"1985-01-17"});
+                account = new Account.Model({'id':accountId,'email':'test@example.com','username':'test','first_name':'Test','last_name':'Dude','phone':'1234567890','url':'http://www.example.com/test','bio':'Test dude is the crash test dummy.','created_time':'2013-02-20 08:11:11','gender':'male','dob':'1985-01-17'});
                 var alerts = new Alert.Collection();
                 var alertView = new Alert.Views.List({collection: alerts});
                 var passwordChangeView = new Account.Views.PasswordChange({
@@ -295,7 +303,7 @@ function(Session, Alert, Account) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -305,7 +313,7 @@ function(Session, Alert, Account) {
             });
 
             after(function(done) {
-                console.log("[TEST] Entering Account Module / Changing a password after()...");
+                console.log('[TEST] Entering Account Module / Changing a password after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();
@@ -346,7 +354,7 @@ function(Session, Alert, Account) {
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering Account Module / Initiating a password recovery before()...");
+                console.log('[TEST] Entering Account Module / Initiating a password recovery before()...');
 
                 // Instantiate layout.
                 var layout = new Backbone.Layout();
@@ -370,7 +378,7 @@ function(Session, Alert, Account) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -380,7 +388,7 @@ function(Session, Alert, Account) {
             });
 
             after(function(done) {
-                console.log("[TEST] Entering Account Module / Initiating a password recovery after()...");
+                console.log('[TEST] Entering Account Module / Initiating a password recovery after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();
@@ -398,7 +406,6 @@ function(Session, Alert, Account) {
                 requestCount++;
 
                 var request = server.requests[requestCount];
-                var params = JSON.parse(request.requestBody);
                 expect(request.method).to.equal('POST');
                 expect(request.url).to.equal('http://localhost:5000/users/password/reset/'); // TODO
 

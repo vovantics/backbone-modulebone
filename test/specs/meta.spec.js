@@ -1,11 +1,17 @@
+/*global define:false, describe: false, before:false, after: false, it:false, expect: false */
 define([
-    // Modules
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+
+    // Modules.
     'modules/meta',
     'modules/session',
-    'modules/alert',
-    'modules/account'
+    'modules/alert'
 ],
-function(Meta, Session, Alert, Account) {
+function($, _, Backbone, Meta, Session, Alert) {
+    'use strict';
 
     describe('Meta Module', function() {
 
@@ -15,7 +21,7 @@ function(Meta, Session, Alert, Account) {
             var requestCount = -1;
 
             before(function(done) {
-                console.log("[TEST] Entering Meta Module / Contacting us before()...");
+                console.log('[TEST] Entering Meta Module / Contacting us before()...');
 
                 // Instantiate layout.
                 var layout = new Backbone.Layout();
@@ -39,7 +45,7 @@ function(Meta, Session, Alert, Account) {
                     server = sinon.fakeServer.create();
 
                     // Attach the layout to this DOM.
-                    $("#sandbox").empty().append(layout.el);
+                    $('#sandbox').empty().append(layout.el);
 
                     // `backbone.layoutmanager` renders views asynchronously.
                     // It must be done before any tests are run.
@@ -49,7 +55,7 @@ function(Meta, Session, Alert, Account) {
             });
 
             after(function(done) {
-                console.log("[TEST] Entering Meta Module / Contacting us after()...");
+                console.log('[TEST] Entering Meta Module / Contacting us after()...');
 
                 // Restores the native fake server XHR constructor.
                 server.restore();

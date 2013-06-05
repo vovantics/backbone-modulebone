@@ -1,21 +1,24 @@
+/*jshint camelcase: false */
+/*global define: false */
 define([
     // Libraries.
-    "jquery",
-    "underscore",
-    "backbone",
-    "handlebars",
+    'jquery',
+    'underscore',
+    'backbone',
+    'handlebars',
 
     // Plugins.
-    "backbone.layoutmanager"
+    'backbone.layoutmanager'
 ],
 
 function($, _, Backbone, Handlebars) {
+    'use strict';
 
     // Provide a global location to place configuration settings and module
     // creation.
     var app = {
         // The root path to run the application through.
-        root: "/",
+        root: '/',
         name: 'backbone-modulebone',
         serverHost: 'localhost:5000'
     };
@@ -28,14 +31,14 @@ function($, _, Backbone, Handlebars) {
         // Allow LayoutManager to augment Backbone.View.prototype.
         manage: true,
 
-        prefix: "templates/",
+        prefix: 'templates/',
 
         fetch: function(path) {
 
             var done;
 
             // Add the html extension.
-            path = path + ".html";
+            path = path + '.html';
 
             // If the template has not been loaded yet, then load.
             if (!JST[path]) {
@@ -79,13 +82,13 @@ function($, _, Backbone, Handlebars) {
 
             // Create a new Layout with options.
             var layout = new Backbone.Layout(_.extend({
-                template: "layouts/" + name,
-                className: "l-" + name,
-                id: "layout"
+                template: 'layouts/' + name,
+                className: 'l-' + name,
+                id: 'layout'
             }, options));
 
             // Insert into the DOM.
-            $("#main").empty().append(layout.el);
+            $('#main').empty().append(layout.el);
 
             // Render the layout.
             //layout.render();

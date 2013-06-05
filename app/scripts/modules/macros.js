@@ -1,31 +1,32 @@
+/*global define: false */
 define([
     // Libraries.
-    "jquery",
-    "underscore",
-    "backbone",
-    "handlebars",
+    'jquery',
+    'underscore',
+    'backbone',
+    'handlebars',
+    'debug',
+    'moment',
 
     // Modules
     'modules/utils',
-
-    'moment'
 ],
+function($, _, Backbone, Handlebars, debug, moment, Utils) {
+    'use strict';
 
-function($, _, Backbone, Handlebars, Utils) {
-
-    Handlebars.registerHelper("formatPhoneNumber", function(phoneNumber) {
+    Handlebars.registerHelper('formatPhoneNumber', function(phoneNumber) {
         phoneNumber = phoneNumber.toString();
-        return "(" + phoneNumber.substr(0,3) + ") " + phoneNumber.substr(3,3) + "-" + phoneNumber.substr(6,4);
+        return '(' + phoneNumber.substr(0,3) + ') ' + phoneNumber.substr(3,3) + '-' + phoneNumber.substr(6,4);
     });
 
-    form_inline_templates = {
+    var formTemplates = {
         'basic_field' : Handlebars.compile(
             '<div class="control-group{{#classNames}} {{.}}{{/classNames}}">' +
                 '{{#if withLabel}}<label class="control-label" for="{{id}}">{{label}}</label>{{/if}}' +
                 '<div class="controls">' +
                     '<input type="{{type}}" id="{{id}}" name="{{name}}" placeholder="{{label}}" value="{{value}}" class="{{#if required}}required{{/if}} {{#inputClassNames}}{{.}} {{/inputClassNames}}">' +
                     '{{#help_inline}}<p class="help-inline">{{{.}}}</p>{{/help_inline}}' +
-                    '{{#help_block}}<p class="help-block">{{{.}}}</p>{{/help_block}}' +
+                    '{{#helpBlock}}<p class="help-block">{{{.}}}</p>{{/helpBlock}}' +
                 '</div>' +
             '</div>'),
         'textarea_field' : Handlebars.compile(
@@ -34,7 +35,7 @@ function($, _, Backbone, Handlebars, Utils) {
                 '<div class="controls">' +
                     '<textarea id="{{id}}" name="{{name}}" placeholder="{{label}}" class="{{#if required}}required{{/if}} {{#inputClassNames}}{{.}} {{/inputClassNames}}">{{{value}}}</textarea>' +
                     '{{#help_inline}}<p class="help-inline">{{{.}}}</p>{{/help_inline}}' +
-                    '{{#help_block}}<p class="help-block">{{{.}}}</p>{{/help_block}}' +
+                    '{{#helpBlock}}<p class="help-block">{{{.}}}</p>{{/helpBlock}}' +
                 '</div>' +
             '</div>'),
         'select_field' : Handlebars.compile(
@@ -43,7 +44,7 @@ function($, _, Backbone, Handlebars, Utils) {
                 '<div class="controls">' +
                     '<select id="{{id}}" name="{{name}}" class="{{#if required}}required{{/if}} {{#inputClassNames}}{{.}} {{/inputClassNames}}">{{#options}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/options}}</select>' +
                     '{{#help_inline}}<p class="help-inline">{{{.}}}</p>{{/help_inline}}' +
-                    '{{#help_block}}<p class="help-block">{{{.}}}</p>{{/help_block}}' +
+                    '{{#helpBlock}}<p class="help-block">{{{.}}}</p>{{/helpBlock}}' +
                 '</div>' +
             '</div>'),
         'date_field' : Handlebars.compile(
@@ -54,7 +55,7 @@ function($, _, Backbone, Handlebars, Utils) {
                     '<select class="input-mini {{#inputClassNames}}{{.}} {{/inputClassNames}}" id="{{name}}-day" name="{{name}}-day">{{#dayoptions}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/dayoptions}}</select>' +
                     '<select class="input-small {{#inputClassNames}}{{.}} {{/inputClassNames}}" id="{{name}}-year" name="{{name}}-year">{{#yearoptions}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/yearoptions}}</select>' +
                     '{{#help_inline}}<p class="help-inline">{{{.}}}</p>{{/help_inline}}' +
-                    '{{#help_block}}<p class="help-block">{{{.}}}</p>{{/help_block}}' +
+                    '{{#helpBlock}}<p class="help-block">{{{.}}}</p>{{/helpBlock}}' +
                 '</div>' +
             '</div>'),
         'options_field' : Handlebars.compile(
@@ -63,7 +64,7 @@ function($, _, Backbone, Handlebars, Utils) {
                 '<div class="controls">' +
                     '{{#options}}<label class="{{type}}"><input type="{{type}}" name="{{name}}" value="{{value}}" {{#if checked}}checked{{/if}}>{{label}}</label>{{/options}}' +
                     '{{#help_inline}}<p class="help-inline">{{{.}}}</p>{{/help_inline}}' +
-                    '{{#help_block}}<p class="help-block">{{{.}}}</p>{{/help_block}}' +
+                    '{{#helpBlock}}<p class="help-block">{{{.}}}</p>{{/helpBlock}}' +
                 '</div>' +
             '</div>')
     };
@@ -71,13 +72,12 @@ function($, _, Backbone, Handlebars, Utils) {
     // Returns the HTML for a form using handlebars partials and
     // helpers to keep things DRY.
     Handlebars.registerHelper('render_form', function(form) {
-        debug.info("Entering macros/render_form()...");
+        debug.info('Entering macros/render_form()...');
 
         var buffer = '',
-            form_buttons = "\n",
-            name_map = {};
+            formButtons = '\n';
 
-        if( (typeof form !== "object") && (form !== null) ) {
+        if( (typeof form !== 'object') && (form !== null) ) {
             return 'No form specified, nothing to render.';
         }
 
@@ -105,7 +105,7 @@ function($, _, Backbone, Handlebars, Utils) {
         }
         buffer += form.fields.length > 0 ? '<fieldset>' : '';
 
-        if( (typeof form !== "object") && (form !== null) ) {
+        if( (typeof form !== 'object') && (form !== null) ) {
             return 'Invalid form passed in, I need an object!';
         }
 
@@ -113,13 +113,13 @@ function($, _, Backbone, Handlebars, Utils) {
 
             var method = ( field.type || 'text' ) + '_field',
             fn = Handlebars.helpers[method],
-            template = form_inline_templates[method],
+            template = formTemplates[method],
             val;
 
             if ( field.type === 'password' ) {
                 method = 'text_field';
                 fn = Handlebars.helpers[method];
-                template = form_inline_templates[method];
+                template = formTemplates[method];
             }
 
             if ( $.isFunction(fn) || template ) {
@@ -158,7 +158,7 @@ function($, _, Backbone, Handlebars, Utils) {
 
                 if ( !fn ) {
                     field.template = method;
-                    fn = Handlebars.helpers.input_field;
+                    fn = Handlebars.helpers.inputField;
                 }
 
                 field.withLabel = form.withLabel;
@@ -180,31 +180,31 @@ function($, _, Backbone, Handlebars, Utils) {
                     button.classNames = [ button.classNames ];
                 }
                 if ( button.link ) {
-                    form_buttons += '<a class="' + button.classNames.join(' ') + '" href="' + button.link + '">' + button.label + "</a>\n";
+                    formButtons += '<a class="' + button.classNames.join(' ') + '" href="' + button.link + '">' + button.label + '</a>\n';
                 } else {
-                    form_buttons += '<button id="' + button.id + '" class="' + button.classNames.join(' ') + '" data-loading-text="Wait...">' + button.label + "</button>\n";
+                    formButtons += '<button id="' + button.id + '" class="' + button.classNames.join(' ') + '" data-loading-text="Wait...">' + button.label + '</button>\n';
                 }
             });
         }
 
-        buffer += '<div class="form-actions">' + form_buttons + '</div>';
+        buffer += '<div class="form-actions">' + formButtons + '</div>';
         buffer += form.fields.length > 0 ? '</fieldset>' : '';
         buffer += '</form>';
 
         return new Handlebars.SafeString(buffer);
     });
 
-    Handlebars.registerHelper('input_field', function(cfg) {
-        debug.info("Entering macros/input_field()...");
+    Handlebars.registerHelper('inputField', function(cfg) {
+        debug.info('Entering macros/inputField()...');
 
-        var template = form_inline_templates[ cfg.template || 'basic_field' ];
+        var template = formTemplates[ cfg.template || 'basic_field' ];
 
-        if ( $.type( cfg.id ) !== "string" ) {
+        if ( $.type( cfg.id ) !== 'string' ) {
             cfg.id = cfg.name;
         }
 
         $.each( [ 'error', 'warning', 'success' ], function(i, level) {
-            if ( $.type( cfg[level] ) === "string" ) {
+            if ( $.type( cfg[level] ) === 'string' ) {
                 if ( $.isArray( cfg.classNames ) ) {
                     cfg.classNames.push(level);
                 }
@@ -217,14 +217,14 @@ function($, _, Backbone, Handlebars, Utils) {
                     }
                 }
 
-                if ( cfg.help_block && !isArray( cfg.help_block ) ) {
-                    cfg.help_block = [ cfg.help_block ];
+                if ( cfg.helpBlock && !$.isArray( cfg.helpBlock ) ) {
+                    cfg.helpBlock = [ cfg.helpBlock ];
                 }
-                else if ( !cfg.help_block ) {
-                    cfg.help_block = [];
+                else if ( !cfg.helpBlock ) {
+                    cfg.helpBlock = [];
                 }
 
-                cfg.help_block.push( cfg[level] );
+                cfg.helpBlock.push( cfg[level] );
             }
         });
 
@@ -243,7 +243,7 @@ function($, _, Backbone, Handlebars, Utils) {
     });
 
     Handlebars.registerHelper('text_field', function(label, name, value, id) {
-        debug.info("Entering macros/text_field()...");
+        debug.info('Entering macros/text_field()...');
 
         var cfg = {
             type : 'text'
@@ -259,27 +259,27 @@ function($, _, Backbone, Handlebars, Utils) {
             cfg.id = id;
         }
 
-        return Handlebars.helpers.input_field(cfg);
+        return Handlebars.helpers.inputField(cfg);
     });
 
     Handlebars.registerHelper('select_field', function(cfg) {
-        debug.info("Entering macros/select_field()...");
+        debug.info('Entering macros/select_field()...');
 
         if ( typeof cfg.template !== 'string' ) {
             cfg.template = 'select_field';
         }
-        return Handlebars.helpers.input_field(cfg);
+        return Handlebars.helpers.inputField(cfg);
     });
 
     Handlebars.registerHelper('textarea_field', function(label, name, value, id) {
-        debug.info("Entering macros/textarea_field()...");
+        debug.info('Entering macros/textarea_field()...');
 
         var cfg = {
             type : 'text'
         };
 
         //if ( isObject(label) ) {
-        if( typeof label === "object" ) {
+        if( typeof label === 'object' ) {
             cfg = $.extend({}, cfg, label);
             //cfg = Y.merge(cfg, label);
         }
@@ -291,13 +291,13 @@ function($, _, Backbone, Handlebars, Utils) {
         }
 
         cfg.template = 'textarea_field';
-        return Handlebars.helpers.input_field(cfg);
+        return Handlebars.helpers.inputField(cfg);
     });
 
     Handlebars.registerHelper('options_field', function(cfg) {
-        debug.info("Entering macros/options_field()...");
+        debug.info('Entering macros/options_field()...');
 
-        if( typeof cfg !== "object" ) {
+        if( typeof cfg !== 'object' ) {
             debug.error('Invalid configuration passed into options_field, expected an object and got ' + typeof cfg);
             return '';
         }
@@ -314,7 +314,7 @@ function($, _, Backbone, Handlebars, Utils) {
             // Convert to a boolean from any truthy value
             option.checked = option.checked ? true : false;
         });
-        return Handlebars.helpers.input_field(cfg);
+        return Handlebars.helpers.inputField(cfg);
     });
 
     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -329,9 +329,9 @@ function($, _, Backbone, Handlebars, Utils) {
     }
 
     function getDaysInMonthAsOptions(monthSelected, daySelected, yearSelected) {
-        var daysMax = moment(yearSelected + "-" + monthSelected, "YYYY-MM").daysInMonth();
+        var daysMax = moment(yearSelected + '-' + monthSelected, 'YYYY-MM').daysInMonth();
         var options = _.map(_.range(1, daysMax + 1), function(day) {
-            return daySelected == day ? { id: day, name: day, selected: true } : { id: day, name: day };
+            return daySelected === day ? { id: day, name: day, selected: true } : { id: day, name: day };
         });
         return options;
     }
@@ -344,13 +344,13 @@ function($, _, Backbone, Handlebars, Utils) {
             _.range(yearStart, yearEnd + 1) :
             _.range(yearStart, yearEnd - 1, -1);
         var options = _.map(yearRange, function(year) {
-            return yearSelected == year ? { id: year, name: year, selected: true } : { id: year, name: year };
+            return yearSelected === year ? { id: year, name: year, selected: true } : { id: year, name: year };
         });
         return options;
     }
 
     Handlebars.registerHelper('date_field', function(cfg) {
-        debug.info("Entering macros/date_field()...");
+        debug.info('Entering macros/date_field()...');
 
         if ( typeof cfg.template !== 'string' ) {
             cfg.template = 'date_field';
@@ -366,15 +366,15 @@ function($, _, Backbone, Handlebars, Utils) {
         cfg.dayoptions = getDaysInMonthAsOptions(monthSelected, daySelected, yearSelected);
         cfg.yearoptions = getYearsAsOptions(yearSelected);
 
-        return Handlebars.helpers.input_field(cfg);
+        return Handlebars.helpers.inputField(cfg);
     });
 
     Handlebars.registerHelper('password_field', function(label, name, value, id) {
-        debug.info("Entering macros/password_field()...");
+        debug.info('Entering macros/password_field()...');
 
-        if ( typeof id !== 'string' ) {
+        /* TODO if ( typeof id !== 'string' ) {
             id = YUI().guid('hb_');
-        }
+        }*/
         return '<div class="clearfix">' +
         '<label for="' + id + '">' + label + '</label>' +
         '<div class="input">' +

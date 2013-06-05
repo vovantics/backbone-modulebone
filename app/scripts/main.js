@@ -1,15 +1,108 @@
+/*jshint scripturl: true */
+require.config({
+
+    // Do a hard override of the locale here
+    // The default is to auto-detect from browser defaults
+    //locale: localStorage.getItem('locale') || 'en-us',  TODO
+    locale: 'en-us',
+
+    // Path mappings for module names not found directly under
+    // baseUrl.
+    paths: {
+        // Libraries.
+        jquery: 'vendor/jquery',
+        //jquery: '../bower_components/jquery/jquery',
+        'jquery.validate': '../bower_components/jquery.validation/jquery.validate',
+        underscore: '../bower_components/lodash/dist/lodash.underscore',
+        backbone: '../bower_components/backbone/backbone',
+        'backbone.layoutmanager': '../bower_components/layoutmanager/backbone.layoutmanager',
+        'backbone.localstorage': '../bower_components/backbone/examples/backbone.localStorage',
+        'backbone.routefilter': '../bower_components/backbone.routefilter/dist/backbone.routefilter',
+        'backbone.subroute': '../bower_components/backbone.subroute/backbone.subroute',
+        'bootstrap': 'vendor/bootstrap',
+        'moment': '../bower_components/moment/moment',
+        text: '../bower_components/requirejs-text/text',
+        handlebars: '../bower_components/handlebars/handlebars',
+        helpers: '../bower_components/handlebars-helpers/helpers',
+        jed: '../bower_components/jed/jed',
+        i18n: '../bower_components/requirejs-i18n/i18n',
+        debug: 'vendor/ba-debug'
+    },
+
+    // The shim config allows us to configure dependencies for
+    // scripts that do not call define() to register a module
+    shim: {
+        'underscore': {
+            exports: '_'
+        },
+        'backbone': {
+            deps: [
+                'underscore',
+                'jquery'
+            ],
+            exports: 'Backbone'
+        },
+        'backbone.layoutmanager': {
+            deps: [
+                'jquery',
+                'backbone',
+                'underscore'
+            ],
+            exports: 'Backbone.LayoutManager'
+        },
+        'bootstrap': ['jquery'],
+        'backbone.routefilter': {
+            deps: [
+                'backbone',
+                'underscore'
+            ],
+            exports: 'Backbone.Routefilter'
+        },
+        'backbone.subroute': {
+            deps: ['backbone', 'underscore'],
+            exports: 'Backbone.SubRoute'
+        },
+        'backbone.localstorage': ['backbone'],
+        'helpers': {
+            deps: [
+                'handlebars'
+            ],
+            exports: 'Helpers'
+        },
+        'handlebars': {
+            exports: 'Handlebars'
+        },
+        'jquery.validate': {
+            deps: [
+                'jquery'
+            ]
+        },
+        'jquery.cookie': {
+            deps: [
+                'jquery'
+            ]
+        },
+        debug: {
+            exports: 'debug'
+        }
+    }
+});
+
 require([
     // Application.
-    "app",
+    'app',
 
     // Main Router.
-    "router",
+    'router',
 
     // Libraries
+    'jquery',
+    'underscore',
+    'backbone',
     'debug'
 ],
-
-function(app, Router) {
+function(app, Router, $, _, Backbone, debug) {
+    'use strict';
 
     // Set a minimum or maximum logging level for the console.
     // log (1) < debug (2) < info (3) < warn (4) < error (5)
@@ -24,7 +117,7 @@ function(app, Router) {
     // TODO: http://stackoverflow.com/questions/13893746/backbone-routes-break-on-refresh-with-yeoman
     // https://github.com/yeoman/yeoman/issues/468
     // https://github.com/yeoman/yeoman/pull/805
-    debug.info("Starting Backbone history...");
+    debug.info('Starting Backbone history...');
     //Backbone.history.start({ pushState: true, root: app.root });
     //Backbone.history.start({ root: app.root });
     Backbone.history.start({ pushState: false });
@@ -32,14 +125,14 @@ function(app, Router) {
     // All navigation that is relative should be passed through the navigate
     // method, to be processed by the router. If the link has a data-bypass
     // attribute, bypass the delegation completely.
-    $(document).on("click", "a:not([data-bypass])", function(evt) {
+    $(document).on('click', 'a:not([data-bypass])', function(evt) {
         // Get the anchor href and protcol
-        var href = $(this).attr("href");
-        var protocol = this.protocol + "//";
+        var href = $(this).attr('href');
+        var protocol = this.protocol + '//';
 
         // Ensure the protocol is not part of URL, meaning its relative.
         if (href && href.slice(0, protocol.length) !== protocol &&
-            href.indexOf("javascript:") !== 0) {
+            href.indexOf('javascript:') !== 0) {
             // Stop the default event to ensure the link will not cause a page
             // refresh.
             evt.preventDefault();
