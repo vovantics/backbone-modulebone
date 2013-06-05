@@ -25,6 +25,7 @@
       var specs = upDirs + 'specs/';
 
       require([
+              specs + 'nls.spec',
               specs + 'about.spec',
               specs + 'account.spec',
               specs + 'meta.spec',
@@ -32,6 +33,7 @@
               specs + 'todo.spec'
               ],
               function(
+                nlsSpec,
                 aboutSpec,
                 accountSpec,
                 metaSpec,

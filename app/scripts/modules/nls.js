@@ -5,7 +5,7 @@ define([
     'handlebars',
     'debug',
 
-    // Modules
+    // Modules.
     'i18n!modules/nls/locale_data'
 ],
 function(Jed, Handlebars, debug, localeData) {
@@ -13,7 +13,7 @@ function(Jed, Handlebars, debug, localeData) {
 
     var i18n = new Jed({
         // Generally output by a .po file conversion
-        localeData : localeData,
+        locale_data : localeData,
         'domain' : 'messages'
     });
 

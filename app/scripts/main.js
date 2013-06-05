@@ -3,8 +3,7 @@ require.config({
 
     // Do a hard override of the locale here
     // The default is to auto-detect from browser defaults
-    //locale: localStorage.getItem('locale') || 'en-us',  TODO
-    locale: 'en-us',
+    locale: localStorage.getItem('locale') || 'en-us',
 
     // Path mappings for module names not found directly under
     // baseUrl.

@@ -1,32 +1,36 @@
 /*global define: false */
 define([
-    "app",
+    // Application.
+    'app',
 
-    // Libs
-    "underscore",
-    "backbone",
+    // Libraries.
+    'jquery',
+    'underscore',
+    'backbone',
+    'handlebars',
+    'debug',
 
     // Modules
-    "modules/session",
-    "modules/alert",
+    'modules/session',
+    'modules/alert',
     'modules/account',
-    "modules/utils",
+    'modules/utils',
     'modules/macros',
 
     //"text!/templates/account/days.html",
 
     'jquery.validate'
 ],
-function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/) {
+function(app, $, _, Backbone, Handlebars, debug, Session, Alert, Account, Utils, Macros/*, daysHtml*/) {
     'use strict';
 
     var Views = {};
 
     // Links in account menu view.
     var menuItems = [
-    { href: 'accounts/edit', caption: 'Profile' },
-    { href: 'accounts/password/change', caption: 'Change Password' },
-    { href: 'accounts/settings', caption: 'Settings' }
+        { href: 'accounts/edit', caption: 'Profile' },
+        { href: 'accounts/password/change', caption: 'Change Password' },
+        { href: 'accounts/settings', caption: 'Settings' }
     ];
 
     Views.Menu = Backbone.View.extend({
@@ -38,15 +42,15 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         initialize: function() {
-            debug.info("Entering Views.Menu.initialize()...");
+            debug.info('Entering Views.Menu.initialize()...');
         },
 
         beforeRender: function() {
-            debug.info("Entering Views.Menu.beforeRender()...");
+            debug.info('Entering Views.Menu.beforeRender()...');
         },
 
         serialize: function() {
-            debug.info("Entering Views.Menu.serialize()...");
+            debug.info('Entering Views.Menu.serialize()...');
 
             return {
                 menuItems: menuItems,
@@ -56,7 +60,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
     });
 
     Views.Profile = Backbone.View.extend({
-        template: "account/profile",
+        template: 'account/profile',
 
         // Delegated events for creating new items.
         events: {
@@ -64,22 +68,22 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         initialize: function() {
-            debug.info("Entering Views.Profile.initialize()...");
+            debug.info('Entering Views.Profile.initialize()...');
         },
 
         beforeRender: function() {
-            debug.info("Entering Views.Profile.beforeRender()...");
+            debug.info('Entering Views.Profile.beforeRender()...');
         },
 
         serialize: function() {
-            debug.info("Entering Views.Profile.serialize()...");
+            debug.info('Entering Views.Profile.serialize()...');
 
             return { username: this.model.get('username') };
         }
     });
 
     Views.Deactivate = Backbone.View.extend({
-        template: "account/deactivate",
+        template: 'account/deactivate',
 
         // Delegated events for creating new items.
         events: {
@@ -87,19 +91,19 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         initialize: function(options) {
-            debug.info("Entering Views.Deactivate.initialize()...");
+            debug.info('Entering Views.Deactivate.initialize()...');
             this.session = this.options.session;
             this.alerts = this.options.alerts;
         },
 
         beforeRender: function() {
-            debug.info("Entering Views.Deactivate.beforeRender()...");
+            debug.info('Entering Views.Deactivate.beforeRender()...');
         },
 
         afterRender: function() {
-            debug.info("Entering Views.Deactivate.afterRender()...");
+            debug.info('Entering Views.Deactivate.afterRender()...');
 
-            this.$("#form-account-deactivate").validate({
+            this.$('#form-account-deactivate').validate({
                 highlight: function(element) {
                     $(element).parent('div').parent('div').addClass('error');
                 },
@@ -111,7 +115,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         deleteOnSubmit: function(e) {
-            debug.info("Entering Views.Deactivate.deleteOnSubmit()...");
+            debug.info('Entering Views.Deactivate.deleteOnSubmit()...');
 
             // Cancel default action of the keypress event.
             e.preventDefault();
@@ -121,13 +125,13 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
 
             this.model.destroy({
                 success: function(model, response, options){
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         // Display alerts.
                         _.each(response.data, function(message) {
                             that.alerts.add(new Alert.Model({msg: message, level: 'error'}));
                         });
                     }
-                    else if (response.status == 'error') {
+                    else if (response.status === 'error') {
                         that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                     }
                     else {
@@ -137,7 +141,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
                         that.session.destroy({
                             async: false,
                             success: function(model, response, options){
-                                if (response.status == 'fail') {
+                                if (response.status === 'fail') {
                                     that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                                 }
                                 else {
@@ -156,15 +160,15 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         serialize: function() {
-            debug.info("Entering Views.Deactivate.beforeRender()...");
+            debug.info('Entering Views.Deactivate.beforeRender()...');
 
             var formDeactivate = {
                 id: 'form-account-deactivate',
                 fields : [
                 ],
                 buttons : [
-                    { classNames : 'btn', label : "No, I've changed my mind!", link : '/' },
-                    { classNames : [ 'btn', 'btn-primary' ], label : "Deactivate my account" }
+                    { classNames : 'btn', label : 'No, I\'ve changed my mind!', link : '/' },
+                    { classNames : [ 'btn', 'btn-primary' ], label : 'Deactivate my account' }
                 ]
             };
 
@@ -173,7 +177,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
     });
 
     Views.Edit = Backbone.View.extend({
-        template: "account/edit",
+        template: 'account/edit',
 
         // Delegated events for creating new items.
         events: {
@@ -183,18 +187,18 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         initialize: function(options) {
-            debug.info("Entering Views.Edit.initialize()...");
+            debug.info('Entering Views.Edit.initialize()...');
             this.alerts = this.options.alerts;
         },
 
         beforeRender: function() {
-            debug.info("Entering Views.Edit.beforeRender()...");
+            debug.info('Entering Views.Edit.beforeRender()...');
         },
 
         afterRender: function() {
-            debug.info("Entering Views.Edit.afterRender()...");
+            debug.info('Entering Views.Edit.afterRender()...');
 
-            this.$("#form-account-edit").validate({
+            this.$('#form-account-edit').validate({
                 highlight: function(element) {
                     $(element).parent('div').parent('div').addClass('error');
                 },
@@ -206,10 +210,10 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         updateDOBDaysOptions: function(e) {
-            debug.info("Entering Views.Edit.updateDOBDaysOptions()...");
+            debug.info('Entering Views.Edit.updateDOBDaysOptions()...');
 
             // Generate options array.
-            var options = Macros.getDaysInMonthAsOptions(this.$("#dob-month").val(), this.$("#dob-day").val(), this.$("#dob-year").val());
+            var options = Macros.getDaysInMonthAsOptions(this.$('#dob-month').val(), this.$('#dob-day').val(), this.$('#dob-year').val());
 
             // Compile template, generate HTML, and update DOB day options.
             var daysOptionsTemplate = Handlebars.compile('{{#each options}}<option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>{{/each}}');
@@ -218,11 +222,11 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
             var output = daysOptionsTemplate({options : options});
 
             // Update #dob-day with new options.
-            this.$("#dob-day").empty().append(output);
+            this.$('#dob-day').empty().append(output);
         },
 
         updateOnSubmit: function(e) {
-            debug.info("Entering Views.Edit.updateOnSubmit()...");
+            debug.info('Entering Views.Edit.updateOnSubmit()...');
 
             // Cancel default action of the keypress event.
             e.preventDefault();
@@ -242,13 +246,13 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
 
             this.model.save(data, {
                 success: function(model, response, options){
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         // Display alerts.
                         _.each(response.data, function(message) {
                             that.alerts.add(new Alert.Model({msg: message, level: 'error'}));
                         });
                     }
-                    else if (response.status == 'error') {
+                    else if (response.status === 'error') {
                         that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                     }
                     else {
@@ -260,7 +264,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         serialize: function() {
-            debug.info("Entering Views.Edit.serialize()...");
+            debug.info('Entering Views.Edit.serialize()...');
 
             var formEdit = {
                 id: 'form-account-edit',
@@ -270,12 +274,11 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
                     { label: 'Last Name', name: 'last_name', inputClassNames: ['middle'] },
                     { label: 'Username', name: 'username', required: true, inputClassNames: ['middle'] },
                     { label: 'Email', name: 'email', required: true, inputClassNames: ['middle'] },
-                    { label: 'Gender', name: 'gender', type: 'select',
-                        options: [
-                            { id: '', name: '---' },
-                            { id: 'male', name: 'Male' },
-                            { id: 'female', name: 'Female' }
-                        ], inputClassNames: ['middle']
+                    { label: 'Gender', name: 'gender', type: 'select', options: [
+                        { id: '', name: '---' },
+                        { id: 'male', name: 'Male' },
+                        { id: 'female', name: 'Female' }
+                    ], inputClassNames: ['middle']
                     },
                     { label: 'DOB', name: 'dob', type: 'date', inputClassNames: ['middle'] },
                     { label: 'Phone', name: 'phone', inputClassNames: ['middle'] },
@@ -294,7 +297,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
     });
 
     Views.PasswordChange = Backbone.View.extend({
-        template: "account/password_change",
+        template: 'account/password_change',
 
         // Delegated events for creating new items.
         events: {
@@ -302,17 +305,17 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         initialize: function(options) {
-            debug.info("Entering Views.PasswordChange.initialize()...");
+            debug.info('Entering Views.PasswordChange.initialize()...');
             this.alerts = this.options.alerts;
         },
 
         beforeRender: function() {
-            debug.info("Entering Views.PasswordChange.beforeRender()...");
+            debug.info('Entering Views.PasswordChange.beforeRender()...');
         },
 
         afterRender: function() {
-            debug.info("Entering Views.PasswordChange.afterRender()...");
-            this.$("#form-account-changepassword").validate({
+            debug.info('Entering Views.PasswordChange.afterRender()...');
+            this.$('#form-account-changepassword').validate({
                 highlight: function(element) {
                     $(element).parent('div').parent('div').addClass('error');
                 },
@@ -324,7 +327,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         updateOnSubmit: function(e) {
-            debug.info("Entering Views.PasswordChange.updateOnSubmit()...");
+            debug.info('Entering Views.PasswordChange.updateOnSubmit()...');
 
             // Cancel default action of the keypress event.
             e.preventDefault();
@@ -339,7 +342,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
 
             this.model.save(data, {
                 success: function(model, response, options){
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         // Display alerts.
                         _.each(response.data, function(message) {
                             that.alerts.add(new Alert.Model({msg: message, level: 'error'}));
@@ -353,7 +356,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
                         // Focus password field
                         that.$('#password').focus();
                     }
-                    else if (response.status == 'error') {
+                    else if (response.status === 'error') {
                         that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
 
                         // Clear each form field.
@@ -378,7 +381,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         serialize: function() {
-            debug.info("Entering Views.PasswordChange.serialize()...");
+            debug.info('Entering Views.PasswordChange.serialize()...');
 
             var form = {
                 id: 'form-account-changepassword',
@@ -397,7 +400,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
     });
 
     Views.PasswordReset = Backbone.View.extend({
-        template: "account/password_reset",
+        template: 'account/password_reset',
 
         // Delegated events for creating new items.
         events: {
@@ -405,17 +408,17 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         initialize: function(options) {
-            debug.info("Entering Views.PasswordReset.initialize()...");
+            debug.info('Entering Views.PasswordReset.initialize()...');
             this.alerts = this.options.alerts;
         },
 
         beforeRender: function() {
-            debug.info("Entering Views.PasswordReset.beforeRender()...");
+            debug.info('Entering Views.PasswordReset.beforeRender()...');
         },
 
         afterRender: function() {
-            debug.info("Entering Views.PasswordReset.afterRender()...");
-            this.$("#form-account-resetpassword").validate({
+            debug.info('Entering Views.PasswordReset.afterRender()...');
+            this.$('#form-account-resetpassword').validate({
                 highlight: function(element) {
                     $(element).parent('div').parent('div').addClass('error');
                 },
@@ -427,7 +430,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         serialize: function() {
-            debug.info("Entering Views.PasswordReset.serialize()...");
+            debug.info('Entering Views.PasswordReset.serialize()...');
 
             var form = {
                 id: 'form-account-resetpassword',
@@ -443,7 +446,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         sendInstructionsOnSubmit: function(e) {
-            debug.info("Entering Views.PasswordReset.sendInstructionsOnSubmit()...");
+            debug.info('Entering Views.PasswordReset.sendInstructionsOnSubmit()...');
 
             // Cancel default action of the keypress event.
             e.preventDefault();
@@ -458,7 +461,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
             {
                 success: function(model, response, options){
 
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         // Display alerts.
                         _.each(response.data, function(message) {
                             that.alerts.add(new Alert.Model({msg: message, level: 'error'}));
@@ -470,7 +473,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
                         // Focus email field
                         that.$('#email').focus();
                     }
-                    else if (response.status == 'error') {
+                    else if (response.status === 'error') {
                         that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                     }
                     else {
@@ -484,11 +487,11 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
     });
 
     Views.PasswordResetDone = Backbone.View.extend({
-        template: "account/password_reset_done"
+        template: 'account/password_reset_done'
     });
 
     Views.Join = Backbone.View.extend({
-        template: "account/join",
+        template: 'account/join',
 
         tagName: 'div id="account-join-outer"',
 
@@ -498,7 +501,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         navigateToRegister: function(e) {
-            debug.info("Entering Views.Join.navigateToRegister()...");
+            debug.info('Entering Views.Join.navigateToRegister()...');
 
             // Cancel default action of the keypress event.
             e.preventDefault();
@@ -510,14 +513,14 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         serialize: function() {
-            debug.info("Entering Views.Join.serialize()...");
+            debug.info('Entering Views.Join.serialize()...');
 
             return { appname: app.name };
         }
     });
 
     Views.Register = Backbone.View.extend({
-        template: "account/register",
+        template: 'account/register',
 
         tagName: 'div id="account-register-outer" class="animated fadeInRight"',
 
@@ -527,20 +530,20 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         initialize: function(options) {
-            debug.info("Entering Views.Register.initialize()...");
+            debug.info('Entering Views.Register.initialize()...');
 
             this.session = options.session;
             this.alerts = options.alerts;
         },
 
         beforeRender: function() {
-            debug.info("Entering Views.Register.beforeRender()...");
+            debug.info('Entering Views.Register.beforeRender()...');
         },
 
         afterRender: function() {
-            debug.info("Entering Views.PasswordReset.afterRender()...");
+            debug.info('Entering Views.PasswordReset.afterRender()...');
 
-            this.$("#form-account-register").validate({
+            this.$('#form-account-register').validate({
                 highlight: function(element) {
                     $(element).parent('div').parent('div').addClass('error');
                 },
@@ -552,7 +555,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         createAccountOnSubmit: function(e) {
-            debug.info("Entering Views.PasswordReset.createAccountOnSubmit()...");
+            debug.info('Entering Views.PasswordReset.createAccountOnSubmit()...');
 
             // Cancel default action of the keypress event.
             e.preventDefault();
@@ -568,7 +571,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
             this.model.save(data, {
                 success: function(model, response, options){
 
-                    if (response.status == 'fail') {
+                    if (response.status === 'fail') {
                         // Display alerts.
                         _.each(response.data, function(message) {
                             that.alerts.add(new Alert.Model({msg: message, level: 'error'}));
@@ -582,7 +585,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
                         // Focus username field
                         that.$('#username').focus();
                     }
-                    else if (response.status == 'error') {
+                    else if (response.status === 'error') {
                         that.alerts.add(new Alert.Model({msg: response.data.message, level: 'error'}));
                     }
                     else {
@@ -591,13 +594,13 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
                         that.session.save({email: that.model.get('email'), password: that.model.get('password')}, {
                             async: false,
                             success: function () {
-                                debug.debug("Got session [" + JSON.stringify(that.session) + "]");
+                                debug.debug('Got session [" + JSON.stringify(that.session) + "]');
                                 if (that.session.isAuthenticated()) {
-                                    debug.debug("Authenticated! Navigating to profile view...");
+                                    debug.debug('Authenticated! Navigating to profile view...');
                                     app.router.navigate('accounts/' + model.get('username') + '/', {trigger: true, replace: true});
                                 }
                                 else {
-                                    debug.error("Something went wrong. Your account has been created. Please login.");
+                                    debug.error('Something went wrong. Your account has been created. Please login.');
                                     that.alerts.add(new Alert.Model({msg: 'Your account has been created. Please login.', level: 'warn'}));
                                     app.router.navigate('sessions/login/', {trigger: true, replace: true});
                                 }
@@ -610,7 +613,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         serialize: function() {
-            debug.info("Entering Views.Register.serialize()...");
+            debug.info('Entering Views.Register.serialize()...');
 
             var form = {
                 id: 'form-account-register',
@@ -631,7 +634,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
     });
 
     Views.Settings = Backbone.View.extend({
-        template: "account/settings",
+        template: 'account/settings',
 
         // Delegated events for creating new items.
         events: {
@@ -639,16 +642,16 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         initialize: function(options) {
-            debug.info("Entering Views.Settings.initialize()...");
+            debug.info('Entering Views.Settings.initialize()...');
             this.alerts = options.alerts;
         },
 
         beforeRender: function() {
-            debug.info("Entering Views.Settings.beforeRender()...");
+            debug.info('Entering Views.Settings.beforeRender()...');
         },
 
         serialize: function() {
-            debug.info("Entering Views.Settings.serialize()...");
+            debug.info('Entering Views.Settings.serialize()...');
 
             var form = {
                 id: 'form-account-settings',
@@ -673,7 +676,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
         },
 
         updateLanguageOnSubmit: function(e) {
-            debug.info("Entering Views.Settings.updateLanguageOnSubmit()...");
+            debug.info('Entering Views.Settings.updateLanguageOnSubmit()...');
 
             // Cancel default action of the keypress event.
             e.preventDefault();
@@ -685,7 +688,7 @@ function(app, _, Backbone, Session, Alert, Account, Utils, Macros/*, daysHtml*/)
 
             // Update language.
             var locale = localStorage.getItem('locale');
-            if(locale != data.language) {
+            if(locale !== data.language) {
                 localStorage.setItem('locale', data.language);
                 location.reload();
             }
