@@ -102,14 +102,14 @@ Responsive templates are styled using Twitter Bootstrap and its JavaScript plugi
 
 1. Install grunt plugins. This adds them to `package.json` after installation.
 
-        $ npm install -D grunt-contrib-handlebars
-        $ npm install -D grunt-recess
-        $ npm install -D grunt-s3
+        $ npm install grunt-contrib-handlebars --save-dev
+        $ npm install grunt-recess --save-dev
+        $ npm install grunt-s3 --save-dev
 
 1. Install packages. This adds them to `package.json` after installation.
 
-        $ npm install -D jed
-        $ npm install -D mocha
+        $ npm install jed --save-dev
+        $ npm install mocha --save-dev
 
 1. Download [ba-debug.js](https://github.com/cowboy/javascript-debug/blob/master/ba-debug.js) and copy to the `app/scripts/vendor` directory.
 
@@ -121,19 +121,15 @@ If you'd like to use additional Yeoman (bower) packages, `yeoman install <packag
 
 * Run yeoman server, write code, and watch your changes auto reload!
 
-        $ yeoman server
-
-* Lint JavaScript code for errors and potential problems.
-
-        $ yeoman lint
+        $ grunt server
 
 ### Build process
 
 The build process constructs an optimized version of the app that's ready to deploy. The build process is an opinionated workflow. I substituted two tasks. Coffeescript is not used, so I aliased the coffee task with nothing. Less CSS is used instead of SASS so the compass task was aliased with the [recess](https://github.com/twitter/recess) task.
 
-* Create dist directory containing optimized version of app ready for deploying.
+* Lint JavaScript code for errors and potential problems, create dist directory containing optimized version of app ready for deploying.
 
-        $ yeoman build
+        $ grunt
 
 ### Test process
 
@@ -141,7 +137,7 @@ Unit tests are run in a headless WebKit via PhantomJS.
 
 * Run yeoman server and mocha test runner.
 
-        $ yeoman server:test
+        $ grunt test
 
 ### Deployment process
 
@@ -157,7 +153,7 @@ Deployment is done with [grunt-s3](https://npmjs.org/package/grunt-s3), a grunt 
 
 1. Deploy your code.
 
-        $ yeoman deploy
+        $ grunt deploy
 
 ## TODO
 

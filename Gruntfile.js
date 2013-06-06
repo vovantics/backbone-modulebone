@@ -439,14 +439,14 @@ module.exports = function (grunt) {
         'requirejs',
         'cssmin',
         'concat',
-        //'uglify',
+        'uglify',
         'copy',
         'rev',
         'usemin'
     ]);
 
     grunt.registerTask('default', [
-        //'jshint',
+        'jshint',
         //'test',
         'build'
     ]);
