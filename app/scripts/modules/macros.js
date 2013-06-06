@@ -1,23 +1,22 @@
-/*global define: false */
+/*global define: false, Handlebars: false */
 define([
     // Libraries.
     'jquery',
     'underscore',
     'backbone',
-    'handlebars',
     'debug',
     'moment',
 
     // Modules
-    'modules/utils',
+    'modules/utils'
 ],
-function($, _, Backbone, Handlebars, debug, moment, Utils) {
+function($, _, Backbone, debug, moment, Utils) {
     'use strict';
 
-    Handlebars.registerHelper('formatPhoneNumber', function(phoneNumber) {
+    /*Handlebars.registerHelper('formatPhoneNumber', function(phoneNumber) {
         phoneNumber = phoneNumber.toString();
         return '(' + phoneNumber.substr(0,3) + ') ' + phoneNumber.substr(3,3) + '-' + phoneNumber.substr(6,4);
-    });
+    });*/
 
     var formTemplates = {
         'basic_field' : Handlebars.compile(

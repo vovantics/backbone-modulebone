@@ -3,7 +3,8 @@ require.config({
 
     // Do a hard override of the locale here
     // The default is to auto-detect from browser defaults
-    locale: localStorage.getItem('locale') || 'en-us',
+    //locale: localStorage.getItem('locale') || 'en-us',
+    locale: 'en-us',
 
     // Path mappings for module names not found directly under
     // baseUrl.
@@ -62,14 +63,14 @@ require.config({
             exports: 'Backbone.SubRoute'
         },
         'backbone.localstorage': ['backbone'],
+        handlebars: {
+            exports: 'Handlebars'
+        },
         'helpers': {
             deps: [
                 'handlebars'
             ],
             exports: 'Helpers'
-        },
-        'handlebars': {
-            exports: 'Handlebars'
         },
         'jquery.validate': {
             deps: [

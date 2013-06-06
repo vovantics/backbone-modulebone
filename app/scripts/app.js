@@ -1,17 +1,16 @@
 /*jshint camelcase: false */
-/*global define: false */
+/*global define: false, Handlebars: false */
 define([
     // Libraries.
     'jquery',
     'underscore',
     'backbone',
-    'handlebars',
 
     // Plugins.
     'backbone.layoutmanager'
 ],
 
-function($, _, Backbone, Handlebars) {
+function($, _, Backbone) {
     'use strict';
 
     // Provide a global location to place configuration settings and module
@@ -37,8 +36,8 @@ function($, _, Backbone, Handlebars) {
 
             var done;
 
-            // Add the html extension.
-            path = path + '.html';
+            // Add the hbs extension.
+            path = path + '.hbs';
 
             // If the template has not been loaded yet, then load.
             if (!JST[path]) {

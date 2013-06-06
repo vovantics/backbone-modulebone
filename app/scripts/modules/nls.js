@@ -1,14 +1,14 @@
-/*global define: false */
+/*jshint camelcase: false */
+/*global define: false, Handlebars: false */
 define([
     // Libraries.
     'jed',
-    'handlebars',
     'debug',
 
     // Modules.
     'i18n!modules/nls/locale_data'
 ],
-function(Jed, Handlebars, debug, localeData) {
+function(Jed, debug, localeData) {
     'use strict';
 
     var i18n = new Jed({

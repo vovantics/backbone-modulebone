@@ -48,8 +48,14 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/*.html',
                     '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
                     '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-                    '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    '<%= yeoman.app %>/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
+            },
+            handlebars: {
+                files: [
+                    '<%= yeoman.app %>/templates/*.hbs'
+                ],
+                tasks: ['handlebars']
             }
         },
         connect: {
@@ -170,8 +176,8 @@ module.exports = function (grunt) {
         recess: {
             bootstrap: {
                 src: [
-                    'components/bootstrap/less/bootstrap.less', // TODO: Use vendor path
-                    'components/bootstrap/less/responsive.less' // TODO: Use vendor path
+                    'bower_components/bootstrap/less/bootstrap.less', // TODO: Use vendor path
+                    'bower_components/bootstrap/less/responsive.less' // TODO: Use vendor path
                 ],
                 dest: 'app/styles/bootstrap.css',
                 options: {
@@ -204,6 +210,9 @@ module.exports = function (grunt) {
                     // `name` and `out` is set by grunt-usemin
                     baseUrl: yeomanConfig.app + '/scripts',
                     optimize: 'none',
+                    paths: {
+                        'templates': '../../.tmp/scripts/templates'
+                    },
                     // TODO: Figure out how to make sourcemaps work with grunt-usemin
                     // https://github.com/yeoman/grunt-usemin/issues/30
                     //generateSourceMaps: true,
@@ -222,7 +231,7 @@ module.exports = function (grunt) {
                     src: [
                         '<%= yeoman.dist %>/scripts/{,*/}*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
-                        '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
+                        '<%= yeoman.dist %>/img/{,*/}*.{png,jpg,jpeg,gif,webp}',
                         '<%= yeoman.dist %>/styles/fonts/*'
                     ]
                 }
@@ -245,9 +254,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= yeoman.app %>/images',
+                    cwd: '<%= yeoman.app %>/img',
                     src: '{,*/}*.{png,jpg,jpeg}',
-                    dest: '<%= yeoman.dist %>/images'
+                    dest: '<%= yeoman.dist %>/img'
                 }]
             }
         },
@@ -255,9 +264,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= yeoman.app %>/images',
+                    cwd: '<%= yeoman.app %>/img',
                     src: '{,*/}*.svg',
-                    dest: '<%= yeoman.dist %>/images'
+                    dest: '<%= yeoman.dist %>/img'
                 }]
             }
         },
@@ -303,13 +312,14 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,txt}',
                         '.htaccess',
-                        'images/{,*/}*.{webp,gif}',
-                        'styles/fonts/*'
+                        'img/{,*/}*.{webp,gif}',
+                        'styles/fonts/*',
+                        'templates/**/*.hbs'
                     ]
                 }, {
                     expand: true,
-                    cwd: '.tmp/images',
-                    dest: '<%= yeoman.dist %>/images',
+                    cwd: '.tmp/img',
+                    dest: '<%= yeoman.dist %>/img',
                     src: [
                         'generated/*'
                     ]
@@ -341,8 +351,56 @@ module.exports = function (grunt) {
             all: {
                 rjsConfig: '<%= yeoman.app %>/scripts/main.js'
             }
+        },
+        handlebars: {
+            compile: {
+                options: {
+                    namespace: 'JST',
+                    amd: true
+                },
+                files: {
+                    '.tmp/scripts/templates.js': ['<%= yeoman.app %>/templates/**/*.hbs']
+                }
+            }
+        },
+        // Deploy configuration
+        // --------------------
+        s3: {
+            options: {
+                // If key and secret not passed with your config, grunt-s3 will
+                // fallback to the following environment variables:
+                // AWS_ACCESS_KEY_ID
+                // AWS_SECRET_ACCESS_KEY
+                bucket: 'backbone-modulebone',  // TODO: Change me.
+                access: 'public-read'
+                //debug: false
+            },
+            dev: {
+                // These options override the defaults
+                options: {
+                    encodePaths: true,
+                    maxOperations: 20
+                },
+                // Files to be uploaded.
+                upload: [
+                    {
+                        rel: 'dist',
+                        src: 'dist/**/*.*',
+                        dest: '',
+                        gzip: false
+                    }
+                ],
+                del: [
+                    {
+                        src: '**/*.*'
+                    }
+                ]
+            }
         }
     });
+
+    // Load `recess` task
+    grunt.loadNpmTasks('grunt-recess');
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
@@ -375,20 +433,25 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'handlebars',
         'useminPrepare',
         'concurrent:dist',
         'requirejs',
         'cssmin',
         'concat',
-        'uglify',
+        //'uglify',
         'copy',
         'rev',
         'usemin'
     ]);
 
     grunt.registerTask('default', [
-        'jshint',
-        'test',
+        //'jshint',
+        //'test',
         'build'
+    ]);
+
+    grunt.registerTask('deploy', [
+        's3'
     ]);
 };
