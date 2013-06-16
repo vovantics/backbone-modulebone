@@ -37,7 +37,9 @@ function(app, $, _, Backbone, debug, Session, Todo, Account, Meta, Alert, Header
             'about/*subroute': 'about',
             '': 'home',
             'landing': 'landing',
-            'contact': 'contact'
+            'contact': 'contact',
+
+            '*notFound': 'notFound'
         },
 
         initialize: function() {
@@ -53,7 +55,7 @@ function(app, $, _, Backbone, debug, Session, Todo, Account, Meta, Alert, Header
 
             // Create a new Alert Collection.
             this.alerts = new Alert.Collection();
-            this.alerts.add(new Alert.Model({msg: 'This is how we style it.', level: 'error'}));  // TODO
+            this.alerts.add(new Alert.Model({msg: 'This is how we style it.', level: 'info'}));  // TODO
         },
 
         subRoutes: {},
@@ -186,6 +188,15 @@ function(app, $, _, Backbone, debug, Session, Todo, Account, Meta, Alert, Header
                     alerts: this.alerts
                 }),
                 '#container-footer': new Meta.Views.Footer()
+            }).render();
+        },
+
+        notFound: function() {
+            debug.info('Entering Router.notFound()...');
+
+            document.title = 'Page Not Found.';
+            app.useLayout('error').setViews({
+                '#container-content': new Meta.Views.PageNotFound()
             }).render();
         }
 
