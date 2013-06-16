@@ -4,13 +4,14 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'handlebars',
     'debug',
     'moment',
 
     // Modules
     'modules/utils'
 ],
-function($, _, Backbone, debug, moment, Utils) {
+function($, _, Backbone, Handlebars, debug, moment, Utils) {
     'use strict';
 
     /*Handlebars.registerHelper('formatPhoneNumber', function(phoneNumber) {
