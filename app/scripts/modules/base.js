@@ -10,7 +10,7 @@ define([
     'debug',
 
     // Modules
-    'modules/alert',
+    'modules/alert'
 ],
 
 function(app, $, _, Backbone, debug, Alert) {
@@ -49,9 +49,7 @@ function(app, $, _, Backbone, debug, Alert) {
 
             // Handle non-200 HTTP response.
             options.error = function(model, xhr, options) {
-                // TODO: Handle 300, 400, and 500 errors
-                debug.debug('options.error xhr = [" + JSON.stringify(xhr) + "]');
-                options.alerts.add(new Alert.Model({msg: 'No Internet Connection.', level: 'danger'}));
+                options.alerts.add(new Alert.Model({msg: '*cough* *cough* Sorry. Please try again.', level: 'danger'}));
             };
 
             return Backbone.Model.prototype.save.call(this, attributes, options);
@@ -64,7 +62,10 @@ function(app, $, _, Backbone, debug, Alert) {
 
             // Handle non-200 HTTP response.
             options.error = function(model, xhr, options) {
-                options.alerts.add(new Alert.Model({msg: 'No Internet Connection.', level: 'danger'}));
+                debug.debug('options.error xhr = [' + JSON.stringify(xhr) + ']');
+                debug.debug('options.error xhr = [' + JSON.stringify(options) + ']');
+                options.alerts.add(new Alert.Model({msg: '*cough* *cough* Sorry. Please try again.', level: 'danger'}));
+                // TODO: No response should be a 'No Internet Connection.'
             };
 
             return Backbone.Model.prototype.fetch.call(this, options);
@@ -77,7 +78,7 @@ function(app, $, _, Backbone, debug, Alert) {
 
             // Handle non-200 HTTP response.
             options.error = function(model, xhr, options) {
-                options.alerts.add(new Alert.Model({msg: 'No Internet Connection.', level: 'danger'}));
+                options.alerts.add(new Alert.Model({msg: '*cough* *cough* Sorry. Please try again.', level: 'danger'}));
             };
 
             return Backbone.Model.prototype.destroy.call(this, options);
