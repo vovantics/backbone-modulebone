@@ -1,0 +1,24 @@
+$iconSpritePath: "../images/glyphicons-halflings.png";
+$iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
+
+@import 'sass-bootstrap/lib/bootstrap';
+
+/*------------------------------------------------------------------
+Main stylesheet: global values and imports
+Scalable & Modular CSS: http://smacss.com
+-------------------------------------------------------------------*/
+/* Base rules */
+@import 'main/_base'; // Variables, mixins, reset, typography, atmosphere, site-wide
+
+/* Layout rules */
+@import 'main/layouts/_onecolumn';
+@import 'main/layouts/_error';
+@import 'main/layouts/_splash';
+@import 'main/layouts/_twocolumn';
+
+/* Module, state, & theme rules for each component */
+@import 'main/components/alert/_module';
+@import 'main/components/btn/_module';
+// TODO @import 'components/btn/_state';
+@import 'main/components/box/_module';
+@import 'main/components/nav/_module';

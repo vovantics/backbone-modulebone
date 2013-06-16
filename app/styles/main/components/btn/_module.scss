@@ -1,0 +1,27 @@
+/*------------------------------------------------------------------
+Buttons Module Rules
+https://smacss.com/book/type-module
+-------------------------------------------------------------------*/
+@import 'sass-bootstrap/lib/variables';
+@import 'sass-bootstrap/lib/mixins';
+
+$btnFacebookBackground:              #2D4785;
+$btnFacebookBackgroundHighlight:     darken($btnFacebookBackground, 10%);
+
+$btnTwitterBackground:              #0099EC;
+$btnTwitterBackgroundHighlight:     darken($btnTwitterBackground, 10%);
+
+.btn {
+    font-size: 12px;
+    font-weight: bold;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+}
+
+.btn-connect-facebook {
+    @include buttonBackground($btnFacebookBackground, $btnFacebookBackgroundHighlight);
+}
+
+.btn-connect-twitter {
+    @include buttonBackground($btnTwitterBackground, $btnTwitterBackgroundHighlight);
+}

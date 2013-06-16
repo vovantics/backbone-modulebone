@@ -48,7 +48,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/*.html',
                     '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
                     '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-                    '<%= yeoman.app %>/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             },
             handlebars: {
@@ -153,7 +153,7 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        /*compass: {
+        compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
                 cssDir: '.tmp/styles',
@@ -170,31 +170,6 @@ module.exports = function (grunt) {
             server: {
                 options: {
                     debugInfo: true
-                }
-            }
-        },*/
-        recess: {
-            bootstrap: {
-                src: [
-                    'bower_components/bootstrap/less/bootstrap.less', // TODO: Use vendor path
-                    'bower_components/bootstrap/less/responsive.less' // TODO: Use vendor path
-                ],
-                dest: 'app/styles/bootstrap.css',
-                options: {
-                    compile: true,
-                    compress: false
-                }
-            },
-            main: {
-                src: [
-                    'app/styles/less/vendor/animate.less',
-                    'app/styles/less/vendor/auth-buttons.less',
-                    'app/styles/less/main/style.less'
-                ],
-                dest: 'app/styles/main.css',
-                options: {
-                    compile: true,
-                    compress: false
                 }
             }
         },
@@ -231,7 +206,7 @@ module.exports = function (grunt) {
                     src: [
                         '<%= yeoman.dist %>/scripts/{,*/}*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
-                        '<%= yeoman.dist %>/img/{,*/}*.{png,jpg,jpeg,gif,webp}',
+                        '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
                         '<%= yeoman.dist %>/styles/fonts/*'
                     ]
                 }
@@ -254,9 +229,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= yeoman.app %>/img',
+                    cwd: '<%= yeoman.app %>/images',
                     src: '{,*/}*.{png,jpg,jpeg}',
-                    dest: '<%= yeoman.dist %>/img'
+                    dest: '<%= yeoman.dist %>/images'
                 }]
             }
         },
@@ -264,9 +239,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= yeoman.app %>/img',
+                    cwd: '<%= yeoman.app %>/images',
                     src: '{,*/}*.svg',
-                    dest: '<%= yeoman.dist %>/img'
+                    dest: '<%= yeoman.dist %>/images'
                 }]
             }
         },
@@ -312,14 +287,14 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,txt}',
                         '.htaccess',
-                        'img/{,*/}*.{webp,gif}',
+                        'images/{,*/}*.{webp,gif}',
                         'styles/fonts/*',
                         'templates/**/*.hbs'
                     ]
                 }, {
                     expand: true,
-                    cwd: '.tmp/img',
-                    dest: '<%= yeoman.dist %>/img',
+                    cwd: '.tmp/images',
+                    dest: '<%= yeoman.dist %>/images',
                     src: [
                         'generated/*'
                     ]
@@ -329,12 +304,11 @@ module.exports = function (grunt) {
         concurrent: {
             server: [
                 // TODO: 'coffee:dist',
-                // TODO: 'compass:server'
+                'compass:server'
             ],
             test: [
                 // TODO: 'coffee',
-                // TODO: 'compass',
-                'recess'
+                'compass'
             ],
             dist: [
                 'coffee',
@@ -398,9 +372,6 @@ module.exports = function (grunt) {
             }
         }
     });
-
-    // Load `recess` task
-    grunt.loadNpmTasks('grunt-recess');
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {

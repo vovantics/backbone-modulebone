@@ -1,0 +1,10 @@
+/*------------------------------------------------------------------
+Splash Layout & State Rules
+https://smacss.com/book/type-layout
+-------------------------------------------------------------------*/
+.l-splash article#content {
+}
+
+.l-splash.has-alerts article#content {
+    padding-top: 20px;
+}
