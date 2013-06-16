@@ -63,7 +63,7 @@ require.config({
             exports: 'Backbone.SubRoute'
         },
         'backbone.localstorage': ['backbone'],
-        handlebars: {
+        'handlebars': {
             exports: 'Handlebars'
         },
         'helpers': {
@@ -118,9 +118,9 @@ function(app, Router, $, _, Backbone, debug) {
     // https://github.com/yeoman/yeoman/issues/468
     // https://github.com/yeoman/yeoman/pull/805
     debug.info('Starting Backbone history...');
-    //Backbone.history.start({ pushState: true, root: app.root });
+    Backbone.history.start({ pushState: true, root: app.root });
     //Backbone.history.start({ root: app.root });
-    Backbone.history.start({ pushState: false });
+    //Backbone.history.start({ pushState: false });
 
     // All navigation that is relative should be passed through the navigate
     // method, to be processed by the router. If the link has a data-bypass
@@ -128,11 +128,14 @@ function(app, Router, $, _, Backbone, debug) {
     $(document).on('click', 'a:not([data-bypass])', function(evt) {
         // Get the anchor href and protcol
         var href = $(this).attr('href');
-        var protocol = this.protocol + '//';
+        //var protocol = this.protocol + '//';
 
         // Ensure the protocol is not part of URL, meaning its relative.
-        if (href && href.slice(0, protocol.length) !== protocol &&
-            href.indexOf('javascript:') !== 0) {
+        //if (href && href.slice(0, protocol.length) !== protocol &&
+        //    href.indexOf('javascript:') !== 0) {
+
+        // If the href exists and is a hash route, run it through Backbone.
+        if (href && href.indexOf('#') === 0) {
             // Stop the default event to ensure the link will not cause a page
             // refresh.
             evt.preventDefault();
