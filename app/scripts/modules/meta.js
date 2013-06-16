@@ -28,6 +28,14 @@ function(app, $, _, Backbone, debug, Base, Alert, Utils) {
         }
     });
 
+    Meta.Views.PageNotFound = Backbone.View.extend({
+        template: 'meta/404',
+
+        initialize: function() {
+            debug.info('Entering Meta.Views.PageNotFound.initialize()...');
+        }
+    });
+
     // Meta Mail Model
     // ---------------
 
