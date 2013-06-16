@@ -10,10 +10,10 @@ Everything each module needs to work should be confined into either the module o
 
 ## Project Structure
 
-Code is divided into [modules](http://weblog.bocoup.com/organizing-your-backbone-js-application-with-modules/) that live under their own modules directory. A module has dependencies from the common libraries in the application and also has specific code for the packages execution alone; other packages should not require another packages dependencies.
+Code is divided into [modules](http://weblog.bocoup.com/organizing-your-backbone-js-application-with-modules/) that live under their own modules directory. A module has dependencies from the common libraries in the application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. This project skeleton was generated using the yeoman `generator-bbb`. You can see available generators with `npm search yeoman-generator` and then install them with `npm install [name]`.
 
     app                      → Application sources
-     └ components            → Bower packages
+     └ bower_components      → Bower packages
      └ img                   → Images
      └ scripts               → JavaScripts
         └ modules            → Modules
@@ -45,9 +45,10 @@ Code is divided into [modules](http://weblog.bocoup.com/organizing-your-backbone
       favicon.ico            → Favicon
       index.html             → The single page that is loaded
       robots.txt             → Instructions to robots
-    components               → Bower packages
     test                     → Test scripts
+     .bowerrc                →
      .gitignore              → Untracked files that git should ignore
+     .jshintrc               →
      Gruntfile.js            → Workflow tasks
      LICENSE                 → License
      README.md               → Used for Readme Driven Development
@@ -95,23 +96,14 @@ Responsive templates are styled using Twitter Bootstrap and its JavaScript plugi
 
 ### Install
 
-1. [Install yeoman](https://github.com/yeoman/yeoman/wiki/Manual-Install)
+1. [Install yeoman](https://github.com/yeoman/yeoman/wiki/Getting-Started)
 1. Install bower packages. This adds them to the `app/bower_components` directory.
 
         $ bower install
 
-1. Install grunt plugins. This adds them to `package.json` after installation.
+1. Install grunt plugins. This adds them to the `node_modules` directory.
 
-        $ npm install grunt-contrib-handlebars --save-dev
-        $ npm install grunt-recess --save-dev
-        $ npm install grunt-s3 --save-dev
-
-1. Install packages. This adds them to `package.json` after installation.
-
-        $ npm install jed --save-dev
-        $ npm install mocha --save-dev
-
-1. Download [ba-debug.js](https://github.com/cowboy/javascript-debug/blob/master/ba-debug.js) and copy to the `app/scripts/vendor` directory.
+        $ npm install
 
 ### Development process
 
