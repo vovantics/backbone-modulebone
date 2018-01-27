@@ -88,7 +88,7 @@ Responsive templates are styled using Twitter Bootstrap and its JavaScript plugi
 
 ## Testing
 
-[Mocha.js](http://visionmedia.github.com/mocha/) is the front end unit testing framework. It allows you to use any assertion library you want. I used [Chai.js](http://chaijs.com/). The [Sinon.js](http://sinonjs.org/) library is used for test spies, stubs and mocks.
+[Mocha.js](http://mochajs.org/) is the front end unit testing framework. It allows you to use any assertion library you want. I used [Chai.js](http://chaijs.com/). The [Sinon.js](http://sinonjs.org/) library is used for test spies, stubs and mocks.
 
 ## Workflows
 
